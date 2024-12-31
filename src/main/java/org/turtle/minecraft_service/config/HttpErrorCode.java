@@ -38,6 +38,9 @@ public enum HttpErrorCode {
     AlreadyExistUserError(
             HttpStatus.CONFLICT, "이미 존재하는 유저입니다."
     ),
+    AlreadyExistNicknameError(
+            HttpStatus.CONFLICT, "해당 닉네임으로 생성된 계정이 존재합니다."
+    ),
 
     // ----- OAuth ------
     UnauthorizedKakaoError(
@@ -53,6 +56,14 @@ public enum HttpErrorCode {
 
     ForbiddenNaverError(
             HttpStatus.FORBIDDEN, "허가되지 않은 네이버 접근입니다."
+    ),
+
+    UnauthorizedGoogleError(
+            HttpStatus.UNAUTHORIZED, "구글을 통한 인증에 실패하였습니다."
+    ),
+
+    ForbiddenGoogleError(
+            HttpStatus.FORBIDDEN, "허가되지 않은 구글 접근입니다."
     ),
 
     // ----- Token ------
@@ -82,22 +93,6 @@ public enum HttpErrorCode {
     ),
     NoSuchRefreshTokenError(
             HttpStatus.UNAUTHORIZED, "존재하지 않은 RefreshToken입니다."
-    ),
-    // ----- Survey ------
-    NoSuchSurveyError(
-            HttpStatus.NOT_FOUND, "존재하지 않은 설문조사입니다."
-    ),
-    NoSuchSurveySatisfiedError(
-            HttpStatus.NOT_FOUND, "존재하지 않은 설문 만족도입니다."
-    ),
-    // ----- Policy ------
-    PolicyNotFoundError(
-            HttpStatus.NOT_FOUND, "존재하지 않는 정책입니다."
-    ),
-
-    // ----- Suggestion ------
-    SuggestionNotFoundError(
-            HttpStatus.NOT_FOUND, "존재하지 않는 제안 정책입니다."
     );
 
     private final HttpStatus httpStatus;
