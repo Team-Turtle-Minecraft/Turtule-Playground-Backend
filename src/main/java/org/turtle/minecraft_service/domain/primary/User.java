@@ -1,4 +1,4 @@
-package org.turtle.minecraft_service.domain;
+package org.turtle.minecraft_service.domain.primary;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,10 +7,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.turtle.minecraft_service.constant.SnsType;
 import org.turtle.minecraft_service.dto.auth.oauth.userInfo.OAuthUserInfoDto;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 @Entity(name = "users")
