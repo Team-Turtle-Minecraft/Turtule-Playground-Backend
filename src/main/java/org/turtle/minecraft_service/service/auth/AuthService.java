@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.turtle.minecraft_service.config.HttpErrorCode;
 import org.turtle.minecraft_service.constant.SnsType;
-import org.turtle.minecraft_service.domain.User;
+import org.turtle.minecraft_service.domain.primary.User;
 import org.turtle.minecraft_service.dto.auth.login.LoginDto;
 import org.turtle.minecraft_service.dto.auth.login.LoginRequestDto;
 import org.turtle.minecraft_service.dto.auth.signup.SignupDto;
@@ -18,7 +18,7 @@ import org.turtle.minecraft_service.dto.auth.oauth.userInfo.OAuthUserInfoDto;
 import org.turtle.minecraft_service.dto.auth.tokenReIssue.TokenReIssueDto;
 import org.turtle.minecraft_service.exception.HttpErrorException;
 import org.turtle.minecraft_service.provider.JwtTokenProvider;
-import org.turtle.minecraft_service.repository.UserRepository;
+import org.turtle.minecraft_service.repository.primary.UserRepository;
 import org.turtle.minecraft_service.service.redis.RedisService;
 
 import java.util.Optional;
