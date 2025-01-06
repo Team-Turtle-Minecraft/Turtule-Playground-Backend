@@ -1,7 +1,7 @@
 package org.turtle.minecraft_service.repository.primary;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.turtle.minecraft_service.domain.primary.User;
+import org.turtle.minecraft_service.domain.primary.user.User;
 
 import java.util.Optional;
 

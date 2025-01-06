@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.turtle.minecraft_service.config.HttpErrorCode;
 import org.turtle.minecraft_service.constant.TokenType;
-import org.turtle.minecraft_service.domain.primary.User;
+import org.turtle.minecraft_service.domain.primary.user.User;
 import org.turtle.minecraft_service.exception.HttpErrorException;
 import org.turtle.minecraft_service.repository.primary.UserRepository;
 

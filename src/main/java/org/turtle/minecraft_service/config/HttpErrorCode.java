@@ -93,6 +93,14 @@ public enum HttpErrorCode {
     ),
     NoSuchRefreshTokenError(
             HttpStatus.UNAUTHORIZED, "존재하지 않은 RefreshToken입니다."
+    ),
+
+    // ----- Image ------
+    NoImageFileError(
+            HttpStatus.BAD_REQUEST, "이미지 파일이 필요합니다."
+    ),
+    InvalidImageFileExtension(
+            HttpStatus.BAD_REQUEST, "지원하지 않는 이미지 확장자 입니다."
     );
 
     private final HttpStatus httpStatus;

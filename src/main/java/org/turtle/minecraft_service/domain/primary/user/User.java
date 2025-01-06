@@ -1,4 +1,4 @@
-package org.turtle.minecraft_service.domain.primary;
+package org.turtle.minecraft_service.domain.primary.user;
 
 import jakarta.persistence.*;
 import lombok.*;
