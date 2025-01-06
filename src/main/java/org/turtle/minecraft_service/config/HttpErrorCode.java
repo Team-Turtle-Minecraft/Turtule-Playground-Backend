@@ -42,6 +42,11 @@ public enum HttpErrorCode {
             HttpStatus.CONFLICT, "해당 닉네임으로 생성된 계정이 존재합니다."
     ),
 
+    // ----- Post ------
+    PostNotFoundError(
+            HttpStatus.NOT_FOUND, "존재하지 않는 게시물입니다."
+    ),
+
     // ----- OAuth ------
     UnauthorizedKakaoError(
             HttpStatus.UNAUTHORIZED, "카카오를 통한 인증에 실패하였습니다."

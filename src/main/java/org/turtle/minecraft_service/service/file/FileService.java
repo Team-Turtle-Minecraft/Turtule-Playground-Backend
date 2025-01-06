@@ -9,5 +9,5 @@ public interface FileService {
 
     String saveImageFile(MultipartFile file) throws InternalErrorException;
 
-    void deleteImageFiles(List<String> savedImagesInProgress) throws InternalErrorException;
+    void deleteImageFiles(List<String> imageFilesName) throws InternalErrorException;
 }

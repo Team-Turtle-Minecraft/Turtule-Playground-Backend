@@ -28,9 +28,9 @@ public class GeneralFileService implements FileService{
     }
 
     @Override
-    public void deleteImageFiles(List<String> savedImagesInProgress) throws InternalErrorException {
-        if (savedImagesInProgress != null) {
-            for (String imageFileName : savedImagesInProgress) {
+    public void deleteImageFiles(List<String> imageFilesName) throws InternalErrorException {
+        if (imageFilesName != null) {
+            for (String imageFileName : imageFilesName) {
                 fileUtilService.deleteFileInStorage(imageFileName, imageUploadPath);
             }
         }

@@ -1,4 +1,4 @@
-package org.turtle.minecraft_service.dto.community;
+package org.turtle.minecraft_service.dto.community.update;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -13,7 +13,7 @@ import org.turtle.minecraft_service.constant.PostType;
 @Setter
 @AllArgsConstructor
 @Builder
-public class PostSaveRequestDto {
+public class PostUpdateRequestDto {
 
     @Schema(example = "Free", description = "게시물 카테고리")
     @NotNull(message = "게시물 카테고리가 필요합니다.")
@@ -26,5 +26,4 @@ public class PostSaveRequestDto {
     @Schema(example = "아끼 마크하다가 이거 찾았는데 이거 뭐냐?", description = "게시물 내용")
     @Size(min = 2, message = "본문을 최소 2글자 이상 입력해주세요.")
     private String content;
-
 }

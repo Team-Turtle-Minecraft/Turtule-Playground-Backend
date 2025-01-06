@@ -9,8 +9,10 @@ import org.turtle.minecraft_service.constant.InternalErrorType;
 import org.turtle.minecraft_service.domain.primary.community.Post;
 import org.turtle.minecraft_service.domain.primary.community.PostImage;
 import org.turtle.minecraft_service.domain.primary.user.User;
-import org.turtle.minecraft_service.dto.community.PostSaveDto;
-import org.turtle.minecraft_service.dto.community.PostSaveRequestDto;
+import org.turtle.minecraft_service.dto.community.create.PostSaveDto;
+import org.turtle.minecraft_service.dto.community.create.PostSaveRequestDto;
+import org.turtle.minecraft_service.dto.community.update.PostUpdateDto;
+import org.turtle.minecraft_service.dto.community.update.PostUpdateRequestDto;
 import org.turtle.minecraft_service.exception.HttpErrorException;
 import org.turtle.minecraft_service.exception.InternalErrorException;
 import org.turtle.minecraft_service.repository.primary.PostImageRepository;
@@ -30,6 +32,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
 
+
     public PostSaveDto savePost(User user, PostSaveRequestDto request, List<MultipartFile> imageFiles){
 
         List<String> savedImagesInProgress = new ArrayList<>();
@@ -42,12 +45,37 @@ public class PostService {
 
     }
 
+    public PostUpdateDto updatePost(User user, Long postId, PostUpdateRequestDto request, List<MultipartFile> imageFiles){
+        List<String> savedImagesInProgress = new ArrayList<>();
+        List<String> imageFilesToDelete = new ArrayList<>();
 
+        Post validatedPost = validatePostAndUser(user, postId);
 
+        List<PostImage> foundPostImages = postImageRepository.findPostImageByPostId(postId);
+        for (PostImage postImage : foundPostImages) {
+            imageFilesToDelete.add(postImage.getImageName());
+            postImageRepository.delete(postImage);
+        }
+        fileService.deleteImageFiles(imageFilesToDelete);
 
+        savePostImages(imageFiles, validatedPost, savedImagesInProgress);
 
+        validatedPost.update(request);
 
+        return PostUpdateDto.fromEntity(validatedPost);
 
+    }
+
+    private Post validatePostAndUser(User user, Long postId) {
+        Post foundPost = postRepository.findById(postId)
+                .orElseThrow(() -> new HttpErrorException(HttpErrorCode.PostNotFoundError));
+
+        if(!user.getNickname().equals(foundPost.getUser().getNickname())){
+            throw new HttpErrorException(HttpErrorCode.AccessDeniedError);
+        }
+
+        return foundPost;
+    }
 
 
     private void savePostImages(List<MultipartFile> imageFiles, Post newPost, List<String> savedImagesInProgress) {

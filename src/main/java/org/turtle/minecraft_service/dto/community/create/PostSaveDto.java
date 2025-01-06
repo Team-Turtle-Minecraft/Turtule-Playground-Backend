@@ -1,4 +1,4 @@
-package org.turtle.minecraft_service.dto.community;
+package org.turtle.minecraft_service.dto.community.create;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 @Builder
 public class PostSaveDto {
 
+    private Long postId;
+
     private String creator;
 
     private PostType postType;
@@ -25,6 +27,7 @@ public class PostSaveDto {
 
     public static PostSaveDto fromEntity(Post newPost){
         return PostSaveDto.builder()
+                .postId(newPost.getId())
                 .creator(newPost.getUser().getNickname())
                 .postType(newPost.getPostType())
                 .title(newPost.getTitle())

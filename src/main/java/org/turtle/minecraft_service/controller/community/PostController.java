@@ -10,15 +10,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.turtle.minecraft_service.domain.primary.user.User;
-import org.turtle.minecraft_service.dto.community.PostSaveDto;
-import org.turtle.minecraft_service.dto.community.PostSaveRequestDto;
-import org.turtle.minecraft_service.dto.community.PostSaveResponseDto;
+import org.turtle.minecraft_service.dto.community.create.PostSaveDto;
+import org.turtle.minecraft_service.dto.community.create.PostSaveRequestDto;
+import org.turtle.minecraft_service.dto.community.create.PostSaveResponseDto;
+import org.turtle.minecraft_service.dto.community.update.PostUpdateDto;
+import org.turtle.minecraft_service.dto.community.update.PostUpdateRequestDto;
+import org.turtle.minecraft_service.dto.community.update.PostUpdateResponseDto;
 import org.turtle.minecraft_service.service.community.PostService;
 
 import java.util.List;
@@ -35,12 +35,27 @@ public class PostController {
     @ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = PostSaveResponseDto.class)))
     @PostMapping("/save")
     public ResponseEntity<PostSaveResponseDto> savePost(@AuthenticationPrincipal User user,
-                                                        @Valid @RequestPart(name = "post") PostSaveRequestDto requestDto,
+                                                        @Valid @RequestPart(name = "post") PostSaveRequestDto request,
                                                         @RequestPart(name = "imageFile") List<MultipartFile> imageFiles
     ) {
 
-        PostSaveDto dto = postService.savePost(user, requestDto, imageFiles);
+        PostSaveDto dto = postService.savePost(user, request, imageFiles);
 
         return new ResponseEntity<>(PostSaveResponseDto.fromDto(dto), HttpStatus.CREATED);
+    }
+
+
+    @Operation(summary = "게시물 수정")
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PostUpdateResponseDto.class)))
+    @PatchMapping("/{id}")
+    public ResponseEntity<PostUpdateResponseDto> updatePost(@AuthenticationPrincipal User user,
+                                                            @PathVariable Long id,
+                                                            @Valid @RequestPart(name = "post") PostUpdateRequestDto request,
+                                                            @RequestPart(name = "imageFile") List<MultipartFile> imageFiles
+    ){
+        PostUpdateDto dto = postService.updatePost(user, id, request, imageFiles);
+
+        return new ResponseEntity<>(PostUpdateResponseDto.fromDto(dto), HttpStatus.OK);
+
     }
 }

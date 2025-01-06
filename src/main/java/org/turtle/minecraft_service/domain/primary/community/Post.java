@@ -11,7 +11,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.turtle.minecraft_service.constant.PostType;
 import org.turtle.minecraft_service.domain.primary.user.User;
-import org.turtle.minecraft_service.dto.community.PostSaveRequestDto;
+import org.turtle.minecraft_service.dto.community.create.PostSaveRequestDto;
+import org.turtle.minecraft_service.dto.community.update.PostUpdateRequestDto;
 
 import java.time.LocalDateTime;
 
@@ -54,6 +55,13 @@ public class Post {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
+    }
+
+    public void update(PostUpdateRequestDto request){
+        this.postType = request.getPostType();
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.updatedAt = LocalDateTime.now();
     }
 
 }
