@@ -17,6 +17,8 @@ import org.turtle.minecraft_service.dto.community.create.PostSaveDto;
 import org.turtle.minecraft_service.dto.community.create.PostSaveRequestDto;
 import org.turtle.minecraft_service.dto.community.create.PostSaveResponseDto;
 import org.turtle.minecraft_service.dto.community.delete.PostDeleteResponseDto;
+import org.turtle.minecraft_service.dto.community.read.detail.PostDetailDto;
+import org.turtle.minecraft_service.dto.community.read.detail.PostDetailResponseDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateRequestDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateResponseDto;
@@ -26,11 +28,22 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/post")
+@RequestMapping("/api/posts")
 @Tag(name = "커뮤니티")
 public class PostController {
 
     private final PostService postService;
+
+    @Operation(summary = "게시물 상세 조회")
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PostDetailResponseDto.class)))
+    @GetMapping("/{id}")
+    public ResponseEntity<PostDetailResponseDto> getPostDetail(@AuthenticationPrincipal User user,
+                                                               @PathVariable Long id
+    ){
+        PostDetailDto dto = postService.getPostDetail(id);
+
+        return new ResponseEntity<>(PostDetailResponseDto.fromDto(dto), HttpStatus.OK);
+    }
 
     @Operation(summary = "게시물 작성")
     @ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = PostSaveResponseDto.class)))

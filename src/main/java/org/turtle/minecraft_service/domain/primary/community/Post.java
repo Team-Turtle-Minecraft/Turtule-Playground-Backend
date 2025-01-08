@@ -15,6 +15,7 @@ import org.turtle.minecraft_service.dto.community.create.PostSaveRequestDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateRequestDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "post")
 @NoArgsConstructor
@@ -45,6 +46,9 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+
+    @OneToMany(mappedBy = "post")
+    private List<PostImage> postImages;
 
     public static Post of(User user, PostSaveRequestDto request){
         return Post.builder()

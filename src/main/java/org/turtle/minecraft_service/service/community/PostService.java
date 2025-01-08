@@ -2,6 +2,7 @@ package org.turtle.minecraft_service.service.community;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.turtle.minecraft_service.config.HttpErrorCode;
@@ -11,6 +12,7 @@ import org.turtle.minecraft_service.domain.primary.community.PostImage;
 import org.turtle.minecraft_service.domain.primary.user.User;
 import org.turtle.minecraft_service.dto.community.create.PostSaveDto;
 import org.turtle.minecraft_service.dto.community.create.PostSaveRequestDto;
+import org.turtle.minecraft_service.dto.community.read.detail.PostDetailDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateRequestDto;
 import org.turtle.minecraft_service.exception.HttpErrorException;
@@ -31,6 +33,21 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
+
+    @Value("${file.upload.image.api}")
+    private String postImageApiUrlPrefix;
+
+
+    public PostDetailDto getPostDetail(Long postId){
+
+        Post foundPost = postRepository.findByIdWithImages(postId)
+                .orElseThrow(() -> new HttpErrorException(HttpErrorCode.PostNotFoundError));
+
+        List<PostImage> foundPostPostImages = foundPost.getPostImages();
+
+        return PostDetailDto.of(postImageApiUrlPrefix ,foundPost, foundPostPostImages);
+
+    }
 
 
     public PostSaveDto savePost(User user, PostSaveRequestDto request, List<MultipartFile> imageFiles){
