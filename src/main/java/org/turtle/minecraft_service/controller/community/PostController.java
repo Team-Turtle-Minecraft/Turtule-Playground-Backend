@@ -16,6 +16,7 @@ import org.turtle.minecraft_service.domain.primary.user.User;
 import org.turtle.minecraft_service.dto.community.create.PostSaveDto;
 import org.turtle.minecraft_service.dto.community.create.PostSaveRequestDto;
 import org.turtle.minecraft_service.dto.community.create.PostSaveResponseDto;
+import org.turtle.minecraft_service.dto.community.delete.PostDeleteResponseDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateRequestDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateResponseDto;
@@ -57,5 +58,16 @@ public class PostController {
 
         return new ResponseEntity<>(PostUpdateResponseDto.fromDto(dto), HttpStatus.OK);
 
+    }
+
+    @Operation(summary = "게시물 삭제")
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PostDeleteResponseDto.class)))
+    @DeleteMapping("/{id}")
+    public ResponseEntity<PostDeleteResponseDto> deletePost(@AuthenticationPrincipal User user,
+                                                            @PathVariable Long id
+    ){
+        postService.deletePost(user, id);
+
+        return new ResponseEntity<>(PostDeleteResponseDto.createNewResponse(), HttpStatus.OK);
     }
 }

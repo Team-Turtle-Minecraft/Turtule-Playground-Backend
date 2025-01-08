@@ -51,12 +51,7 @@ public class PostService {
 
         Post validatedPost = validatePostAndUser(user, postId);
 
-        List<PostImage> foundPostImages = postImageRepository.findPostImageByPostId(postId);
-        for (PostImage postImage : foundPostImages) {
-            imageFilesToDelete.add(postImage.getImageName());
-            postImageRepository.delete(postImage);
-        }
-        fileService.deleteImageFiles(imageFilesToDelete);
+        deleteExistPostImages(postId, imageFilesToDelete);
 
         savePostImages(imageFiles, validatedPost, savedImagesInProgress);
 
@@ -65,6 +60,30 @@ public class PostService {
         return PostUpdateDto.fromEntity(validatedPost);
 
     }
+
+    public void deletePost(User user, Long postId){
+
+        List<String> imageFilesToDelete = new ArrayList<>();
+
+        Post validatedPost = validatePostAndUser(user, postId);
+
+        deleteExistPostImages(postId, imageFilesToDelete);
+
+        postRepository.delete(validatedPost);
+
+    }
+
+
+    private void deleteExistPostImages(Long postId, List<String> imageFilesToDelete) {
+        List<PostImage> foundPostImages = postImageRepository.findPostImageByPostId(postId);
+        for (PostImage postImage : foundPostImages) {
+            imageFilesToDelete.add(postImage.getImageName());
+            postImageRepository.delete(postImage);
+        }
+
+        fileService.deleteImageFiles(imageFilesToDelete);
+    }
+
 
     private Post validatePostAndUser(User user, Long postId) {
         Post foundPost = postRepository.findById(postId)
