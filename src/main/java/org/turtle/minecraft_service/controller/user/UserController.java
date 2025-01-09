@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.turtle.minecraft_service.config.HttpErrorCode;
-import org.turtle.minecraft_service.domain.primary.User;
+import org.turtle.minecraft_service.domain.primary.user.User;
 import org.turtle.minecraft_service.dto.user.inquiry.UserInfoInquiryDto;
 import org.turtle.minecraft_service.dto.user.inquiry.UserInfoInquiryResponseDto;
 import org.turtle.minecraft_service.service.user.UserService;

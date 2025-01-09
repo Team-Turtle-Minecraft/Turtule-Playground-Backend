@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.turtle.minecraft_service.config.HttpErrorCode;
-import org.turtle.minecraft_service.domain.primary.User;
+import org.turtle.minecraft_service.domain.primary.user.User;
 import org.turtle.minecraft_service.domain.secondary.MinecraftUser;
 import org.turtle.minecraft_service.dto.user.inquiry.UserInfoInquiryDto;
 import org.turtle.minecraft_service.exception.HttpErrorException;
