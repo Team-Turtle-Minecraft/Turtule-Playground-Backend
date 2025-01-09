@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,13 @@ import org.turtle.minecraft_service.dto.community.create.PostSaveDto;
 import org.turtle.minecraft_service.dto.community.create.PostSaveRequestDto;
 import org.turtle.minecraft_service.dto.community.create.PostSaveResponseDto;
 import org.turtle.minecraft_service.dto.community.delete.PostDeleteResponseDto;
+import org.turtle.minecraft_service.dto.community.interaction.PostLikeResponseDto;
+import org.turtle.minecraft_service.dto.community.interaction.PostViewDto;
+import org.turtle.minecraft_service.dto.community.interaction.PostViewResponseDto;
 import org.turtle.minecraft_service.dto.community.read.detail.PostDetailDto;
 import org.turtle.minecraft_service.dto.community.read.detail.PostDetailResponseDto;
+import org.turtle.minecraft_service.dto.community.read.list.PostListDto;
+import org.turtle.minecraft_service.dto.community.read.list.PostListResponseDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateRequestDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateResponseDto;
@@ -33,6 +39,32 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+
+    @Operation(summary = "게시물 목록 조회")
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PostListResponseDto.class)))
+    @GetMapping()
+    public ResponseEntity<PostListResponseDto> getPostList(@AuthenticationPrincipal User user,
+                                                           @RequestParam(required = false) String sortType,
+                                                           @RequestParam(required = false) String postType,
+                                                           @RequestParam(required = false, defaultValue = "1") int page
+    ){
+        PostListDto dto = postService.getPostList(postType, sortType, page);
+
+        return new ResponseEntity<>(PostListResponseDto.fromDto(dto), HttpStatus.OK);
+    }
+
+    @Operation(summary = "게시물 검색")
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PostListResponseDto.class)))
+    @GetMapping("/search")
+    public ResponseEntity<PostListResponseDto> getSearchedPosts(@AuthenticationPrincipal User user,
+                                                                  @RequestParam @Size(min = 2,  message = "검색어는 최소 2글자 이상이어야 합니다") String keyword,
+                                                                  @RequestParam(required = false, defaultValue = "1") int page
+
+    ) {
+        PostListDto dto = postService.getSearchedPosts(keyword, page);
+
+        return new ResponseEntity<>(PostListResponseDto.fromDto(dto), HttpStatus.OK);
+    }
 
     @Operation(summary = "게시물 상세 조회")
     @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PostDetailResponseDto.class)))
@@ -83,4 +115,27 @@ public class PostController {
 
         return new ResponseEntity<>(PostDeleteResponseDto.createNewResponse(), HttpStatus.OK);
     }
+
+    @Operation(summary = "게시물 좋아요")
+    @ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = PostLikeResponseDto.class)))
+    @PostMapping("/{id}/like")
+    public ResponseEntity<PostLikeResponseDto> likeThePost(@AuthenticationPrincipal User user,
+                                                           @PathVariable Long id
+    ) {
+        String resultMessage = postService.likeThePost(user, id);
+
+        return new ResponseEntity<>(PostLikeResponseDto.createNewResponse(resultMessage), HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "게시물 조회수 증가")
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PostViewResponseDto.class)))
+    @PostMapping("/{id}/views")
+    public ResponseEntity<PostViewResponseDto> increasePostView(@AuthenticationPrincipal User user,
+                                                                @PathVariable Long id
+    ){
+        PostViewDto dto = postService.increasePostView(user, id);
+
+        return new ResponseEntity<>(PostViewResponseDto.fromDto(dto), HttpStatus.OK);
+    }
+
 }

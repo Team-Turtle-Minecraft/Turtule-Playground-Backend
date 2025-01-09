@@ -10,6 +10,7 @@ import org.turtle.minecraft_service.config.HttpErrorCode;
 import org.turtle.minecraft_service.exception.HttpErrorException;
 
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class RedisService {
     private final StringRedisTemplate redisTemplate;
 
+    // JWT
     public void save(String key, String value) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         valueOperations.set(key, value);
@@ -33,5 +35,22 @@ public class RedisService {
         if (deletedData == null) {
             throw new HttpErrorException(HttpErrorCode.InternalServerError);
         }
+    }
+
+    // Post Views
+    public void savePostView(Long postId, String snsId) {
+        String key = generatePostViewKey(postId, snsId);
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        valueOperations.set(key, "1", 3 * 60, TimeUnit.SECONDS);
+    }
+
+    public boolean hasPostView(Long postId, String snsId) {
+        String key = generatePostViewKey(postId, snsId);
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        return valueOperations.get(key) != null;
+    }
+
+    private String generatePostViewKey(Long postId, String snsId) {
+        return "post:view" + postId + ":" + snsId;
     }
 }

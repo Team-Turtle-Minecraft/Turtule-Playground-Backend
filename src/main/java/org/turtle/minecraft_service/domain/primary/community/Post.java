@@ -37,6 +37,9 @@ public class Post {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
+    @Column(nullable = false)
+    private int views;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -50,11 +53,15 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<PostImage> postImages;
 
+    @OneToMany(mappedBy = "post")
+    private List<PostLike> postLike;
+
     public static Post of(User user, PostSaveRequestDto request){
         return Post.builder()
                 .postType(request.getPostType())
                 .title(request.getTitle())
                 .content(request.getContent())
+                .views(0)
                 .user(user)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
@@ -66,6 +73,10 @@ public class Post {
         this.title = request.getTitle();
         this.content = request.getContent();
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void updateViews(){
+        this.views += 1;
     }
 
 }

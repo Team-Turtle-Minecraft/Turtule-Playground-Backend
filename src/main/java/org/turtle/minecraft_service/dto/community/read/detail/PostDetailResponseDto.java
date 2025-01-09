@@ -39,6 +39,12 @@ public class PostDetailResponseDto {
     @Schema(description = "게시물 이미지 이름(리스트)", example = "[이미지1, 이미지2, 이미지3]]")
     private List<String> postImages;
 
+    @Schema(description = "게시물 조회수", example = "1")
+    private int views;
+
+    @Schema(description = "게시물 좋아요수", example = "1")
+    private int likes;
+
     @Schema(description = "게시물 작성 시간")
     private LocalDateTime createdAt;
 
@@ -55,6 +61,8 @@ public class PostDetailResponseDto {
                 .content(dto.getContent())
                 .postImageApiUrlPrefix(dto.getPostImageApiUrlPrefix())
                 .postImages(dto.getPostImages())
+                .views(dto.getViews())
+                .likes(dto.getLikes())
                 .createdAt(dto.getCreatedAt())
                 .updatedAt(dto.getUpdatedAt())
                 .build();
