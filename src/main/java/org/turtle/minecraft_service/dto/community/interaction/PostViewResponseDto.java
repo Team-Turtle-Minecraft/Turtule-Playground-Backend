@@ -19,7 +19,7 @@ public class PostViewResponseDto {
 
     public static PostViewResponseDto fromDto(PostViewDto dto){
         return PostViewResponseDto.builder()
-                .message(dto.getMessage() == null ? "게시물의 조회수가 증가하였습니다." : dto.getMessage())
+                .message("게시물의 조회수가 증가하였습니다.")
                 .currentViews(dto.getCurrentViews())
                 .build();
     }

@@ -2,13 +2,16 @@ package org.turtle.minecraft_service.service.redis;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.turtle.minecraft_service.config.HttpErrorCode;
 import org.turtle.minecraft_service.exception.HttpErrorException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -52,5 +55,36 @@ public class RedisService {
 
     private String generatePostViewKey(Long postId, String snsId) {
         return "post:view" + postId + ":" + snsId;
+    }
+
+    // User Attendance
+    public void saveAttendance(String nickname) {
+        String key = generateAttendanceKey(nickname);
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        valueOperations.set(key, LocalDate.now().toString(), getTimeOut(), TimeUnit.SECONDS);
+    }
+
+    public boolean hasAttendanceToday(String nickname) {
+        String key = generateAttendanceKey(nickname);
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        String value = valueOperations.get(key);
+        return value != null && value.equals(LocalDate.now().toString());
+    }
+
+    private String generateAttendanceKey(String nickname) {
+        return "attendance:" + nickname;
+    }
+
+    // 다음날 오전 6시까지 남은 시간(초) 계산
+    private long getTimeOut() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime nextSixAM = now.with(LocalTime.of(6, 0));
+
+        // 현재 시각이 오전 6시 이후라면 다음날 오전 6시로 설정
+        if (now.getHour() >= 6) {
+            nextSixAM = nextSixAM.plusDays(1);
+        }
+
+        return ChronoUnit.SECONDS.between(now, nextSixAM);
     }
 }

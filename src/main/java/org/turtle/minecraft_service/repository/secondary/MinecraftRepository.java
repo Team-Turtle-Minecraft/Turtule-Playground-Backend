@@ -11,5 +11,5 @@ import java.util.Optional;
 
 public interface MinecraftRepository extends JpaRepository<MinecraftUser, Long> {
 
-   Optional<MinecraftUser> findByPlayerName(String nickname);
+   MinecraftUser findByPlayerName(String nickname);
 }

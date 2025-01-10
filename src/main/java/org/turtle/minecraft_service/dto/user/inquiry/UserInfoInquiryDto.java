@@ -34,6 +34,8 @@ public class UserInfoInquiryDto {
 
     private Long regionsDiscovered;
 
+    private String loginStatus;
+
     public static UserInfoInquiryDto of(User user, MinecraftUser minecraftUser){
         return UserInfoInquiryDto.builder()
                 .snsType(user.getSnsType())
@@ -46,6 +48,7 @@ public class UserInfoInquiryDto {
                 .historyDiscovered(minecraftUser.getHistoryDiscoveries())
                 .monstersDiscovered(minecraftUser.getMonstersDiscoveries())
                 .regionsDiscovered(minecraftUser.getRegionsDiscoveries())
+                .loginStatus(minecraftUser.getCurrentStatus())
                 .build();
     }
 

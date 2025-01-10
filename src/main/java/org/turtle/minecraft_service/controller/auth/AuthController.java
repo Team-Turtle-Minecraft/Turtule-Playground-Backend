@@ -36,6 +36,10 @@ public class AuthController {
     private final AuthService authService;
 
     @Operation(summary = "닉네임 중복확인")
+    @ApiErrorCodeExamples(value = {
+            @ApiErrorCodeExample(value = HttpErrorCode.UserNotFoundErrorInTurtlePlayGround),
+            @ApiErrorCodeExample(value = HttpErrorCode.AlreadyExistNicknameError)
+    })
     @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = NicknameDuplicationResponseDto.class)))
     @PostMapping("/check/nickname")
     public ResponseEntity<NicknameDuplicationResponseDto> checkNickname(@Valid @RequestBody NicknameDuplicationRequestDto requestDto){

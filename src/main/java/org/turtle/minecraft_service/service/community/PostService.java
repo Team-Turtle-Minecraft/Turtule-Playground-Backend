@@ -168,12 +168,13 @@ public class PostService {
         Post foundPost = postRepository.findById(postId)
                 .orElseThrow(() -> new HttpErrorException(HttpErrorCode.PostNotFoundError));
 
-        if(!redisService.hasPostView(postId, user.getSnsId())){
-            foundPost.updateViews();
-            redisService.savePostView(postId, user.getSnsId());
-            return PostViewDto.fromEntity(foundPost, null);
+        if(redisService.hasPostView(postId, user.getSnsId())){
+            throw new HttpErrorException(HttpErrorCode.ViewIsAlreadyIncreased);
+        }
 
-        }else return PostViewDto.fromEntity(foundPost, "조회수는 3분에 한번 업데이트됩니다.");
+        foundPost.updateViews();
+        redisService.savePostView(postId, user.getSnsId());
+        return PostViewDto.fromEntity(foundPost);
     }
 
 

@@ -12,13 +12,11 @@ import org.turtle.minecraft_service.domain.primary.community.Post;
 @Builder
 public class PostViewDto {
 
-    private String message;
     private int currentViews;
 
 
-    public static PostViewDto fromEntity(Post post, String message){
+    public static PostViewDto fromEntity(Post post){
         return PostViewDto.builder()
-                .message(message)
                 .currentViews(post.getViews())
                 .build();
     }
