@@ -59,6 +59,7 @@ public class MinecraftUser {
     @Column(name = "regions_discoveries")
     private Long regionsDiscoveries;
 
-
+    @Column(name = "current_status")
+    private String currentStatus;
 
 }

@@ -47,6 +47,10 @@ public enum HttpErrorCode {
             HttpStatus.NOT_FOUND, "존재하지 않는 게시물입니다."
     ),
 
+    ViewIsAlreadyIncreased(
+            HttpStatus.CONFLICT, "조회수는 3분에 한번 증가시킬 수 있습니다."
+    ),
+
     // ----- OAuth ------
     UnauthorizedKakaoError(
             HttpStatus.UNAUTHORIZED, "카카오를 통한 인증에 실패하였습니다."
@@ -106,7 +110,23 @@ public enum HttpErrorCode {
     ),
     InvalidImageFileExtension(
             HttpStatus.BAD_REQUEST, "지원하지 않는 이미지 확장자 입니다."
+    ),
+
+    // ----- Attendance ------
+    PlayerNotLoggedInError(
+            HttpStatus.UNAUTHORIZED, "먼저 거북이 놀이터에 접속해주세요!"
+    ),
+    AlreadyCheckedInError(
+            HttpStatus.CONFLICT, "이미 출석체크를 하셨습니다."
+    ),
+    UnauthorizedTurtlePlayGroundError(
+            HttpStatus.UNAUTHORIZED, "거북이 놀이터 서버 인증에 실패하였습니다."
+    ),
+    ForbiddenTurtlePlayGroundError(
+            HttpStatus.FORBIDDEN, "허가되지 않은 거북이 놀이터 서버 접근입니다."
     );
+
+
 
     private final HttpStatus httpStatus;
     private final String message;

@@ -33,6 +33,8 @@ public class UserInfoInquiryResponseDto {
 
     private Long regionsDiscovered;
 
+    private String loginStatus;
+
 
     public static UserInfoInquiryResponseDto fromDto(UserInfoInquiryDto dto){
         return UserInfoInquiryResponseDto.builder()
@@ -46,6 +48,7 @@ public class UserInfoInquiryResponseDto {
                 .historyDiscovered(dto.getHistoryDiscovered())
                 .monstersDiscovered(dto.getMonstersDiscovered())
                 .regionsDiscovered(dto.getRegionsDiscovered())
+                .loginStatus(dto.getLoginStatus())
                 .build();
     }
 }
