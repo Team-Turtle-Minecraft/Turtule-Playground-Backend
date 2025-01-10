@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.turtle.minecraft_service.config.HttpErrorCode;
 import org.turtle.minecraft_service.domain.primary.user.User;
 import org.turtle.minecraft_service.dto.community.create.PostSaveDto;
 import org.turtle.minecraft_service.dto.community.create.PostSaveRequestDto;
@@ -29,6 +30,8 @@ import org.turtle.minecraft_service.dto.community.update.PostUpdateDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateRequestDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateResponseDto;
 import org.turtle.minecraft_service.service.community.PostService;
+import org.turtle.minecraft_service.swagger.ApiErrorCodeExample;
+import org.turtle.minecraft_service.swagger.ApiErrorCodeExamples;
 
 import java.util.List;
 
@@ -41,6 +44,11 @@ public class PostController {
     private final PostService postService;
 
     @Operation(summary = "게시물 목록 조회")
+    @ApiErrorCodeExamples(value = {
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError)
+    })
     @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PostListResponseDto.class)))
     @GetMapping()
     public ResponseEntity<PostListResponseDto> getPostList(@AuthenticationPrincipal User user,
@@ -54,6 +62,11 @@ public class PostController {
     }
 
     @Operation(summary = "게시물 검색")
+    @ApiErrorCodeExamples(value = {
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError)
+    })
     @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PostListResponseDto.class)))
     @GetMapping("/search")
     public ResponseEntity<PostListResponseDto> getSearchedPosts(@AuthenticationPrincipal User user,
@@ -67,6 +80,12 @@ public class PostController {
     }
 
     @Operation(summary = "게시물 상세 조회")
+    @ApiErrorCodeExamples(value = {
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.PostNotFoundError)
+    })
     @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PostDetailResponseDto.class)))
     @GetMapping("/{id}")
     public ResponseEntity<PostDetailResponseDto> getPostDetail(@AuthenticationPrincipal User user,
@@ -78,6 +97,14 @@ public class PostController {
     }
 
     @Operation(summary = "게시물 작성")
+    @ApiErrorCodeExamples(value = {
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.NoImageFileError),
+            @ApiErrorCodeExample(value = HttpErrorCode.InvalidImageFileExtension),
+            @ApiErrorCodeExample(value = HttpErrorCode.InternalServerError)
+    })
     @ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = PostSaveResponseDto.class)))
     @PostMapping("/save")
     public ResponseEntity<PostSaveResponseDto> savePost(@AuthenticationPrincipal User user,
@@ -92,6 +119,15 @@ public class PostController {
 
 
     @Operation(summary = "게시물 수정")
+    @ApiErrorCodeExamples(value = {
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.PostNotFoundError),
+            @ApiErrorCodeExample(value = HttpErrorCode.NoImageFileError),
+            @ApiErrorCodeExample(value = HttpErrorCode.InvalidImageFileExtension),
+            @ApiErrorCodeExample(value = HttpErrorCode.InternalServerError)
+    })
     @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PostUpdateResponseDto.class)))
     @PatchMapping("/{id}")
     public ResponseEntity<PostUpdateResponseDto> updatePost(@AuthenticationPrincipal User user,
@@ -105,6 +141,12 @@ public class PostController {
 
     }
 
+    @ApiErrorCodeExamples(value = {
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.PostNotFoundError)
+    })
     @Operation(summary = "게시물 삭제")
     @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PostDeleteResponseDto.class)))
     @DeleteMapping("/{id}")
@@ -117,6 +159,12 @@ public class PostController {
     }
 
     @Operation(summary = "게시물 좋아요")
+    @ApiErrorCodeExamples(value = {
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.PostNotFoundError)
+    })
     @ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = PostLikeResponseDto.class)))
     @PostMapping("/{id}/like")
     public ResponseEntity<PostLikeResponseDto> likeThePost(@AuthenticationPrincipal User user,
@@ -128,6 +176,13 @@ public class PostController {
     }
 
     @Operation(summary = "게시물 조회수 증가")
+    @ApiErrorCodeExamples(value = {
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.PostNotFoundError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ViewIsAlreadyIncreased)
+    })
     @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PostViewResponseDto.class)))
     @PostMapping("/{id}/views")
     public ResponseEntity<PostViewResponseDto> increasePostView(@AuthenticationPrincipal User user,
