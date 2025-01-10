@@ -36,7 +36,6 @@ public class UserController {
             @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
             @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
             @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError),
-            @ApiErrorCodeExample(value = HttpErrorCode.UserNotFoundError)
     })
     @GetMapping()
     @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UserInfoInquiryResponseDto.class )))
@@ -53,7 +52,6 @@ public class UserController {
             @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
             @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
             @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError),
-            @ApiErrorCodeExample(value = HttpErrorCode.UserNotFoundError),
             @ApiErrorCodeExample(value = HttpErrorCode.PlayerNotLoggedInError),
             @ApiErrorCodeExample(value = HttpErrorCode.AlreadyCheckedInError),
             @ApiErrorCodeExample(value = HttpErrorCode.UnauthorizedTurtlePlayGroundError),

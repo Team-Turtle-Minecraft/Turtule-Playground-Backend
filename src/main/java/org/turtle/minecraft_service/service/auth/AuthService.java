@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.turtle.minecraft_service.config.HttpErrorCode;
 import org.turtle.minecraft_service.constant.SnsType;
 import org.turtle.minecraft_service.domain.primary.user.User;
+import org.turtle.minecraft_service.domain.secondary.MinecraftUser;
 import org.turtle.minecraft_service.dto.auth.login.LoginDto;
 import org.turtle.minecraft_service.dto.auth.login.LoginRequestDto;
 import org.turtle.minecraft_service.dto.auth.signup.SignupDto;
@@ -20,6 +21,7 @@ import org.turtle.minecraft_service.exception.HttpErrorException;
 import org.turtle.minecraft_service.provider.JwtTokenProvider;
 import org.turtle.minecraft_service.repository.primary.UserRepository;
 import org.turtle.minecraft_service.service.redis.RedisService;
+import org.turtle.minecraft_service.service.user.UserService;
 
 import java.util.Optional;
 
@@ -31,16 +33,22 @@ public class AuthService {
     private final GoogleOAuthService googleOAuthService;
     private final KakaoOAuthService kakaoOAuthService;
     private final NaverOAuthService naverOAuthService;
+    private final UserService userService;
 
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisService redisService;
 
     public void checkNickname(@Valid NicknameDuplicationRequestDto requestDto){
-        Optional<User> user = userRepository.findByNickname(requestDto.getNickname());
-        if(user.isPresent()){
+
+        if(userService.validateExistUserInTurtlePlayGround(requestDto.getNickname()) == null){
+            throw new HttpErrorException(HttpErrorCode.UserNotFoundErrorInTurtlePlayGround);
+        }
+
+        if(userRepository.findByNickname(requestDto.getNickname()).isPresent()){
             throw new HttpErrorException(HttpErrorCode.AlreadyExistNicknameError);
         }
+
     }
 
 

@@ -42,6 +42,11 @@ public enum HttpErrorCode {
             HttpStatus.CONFLICT, "해당 닉네임으로 생성된 계정이 존재합니다."
     ),
 
+    // ----- Turtle PlayGround User ------
+    UserNotFoundErrorInTurtlePlayGround(
+            HttpStatus.NOT_FOUND, "거북이 놀이터에 존재하지 않는 닉네임입니다."
+    ),
+
     // ----- Post ------
     PostNotFoundError(
             HttpStatus.NOT_FOUND, "존재하지 않는 게시물입니다."

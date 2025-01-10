@@ -26,16 +26,14 @@ public class UserService {
 
     public UserInfoInquiryDto getUserInfo(User user){
 
-        MinecraftUser minecraftUser =  minecraftRepository.findByPlayerName(user.getNickname())
-                .orElseThrow(() -> new HttpErrorException(HttpErrorCode.UserNotFoundError));
+        MinecraftUser minecraftUser = validateExistUserInTurtlePlayGround(user.getNickname());
 
         return UserInfoInquiryDto.of(user, minecraftUser);
     }
 
     public UserAttendanceDto checkAttendance(User user){
 
-        MinecraftUser minecraftUser =  minecraftRepository.findByPlayerName(user.getNickname())
-                .orElseThrow(() -> new HttpErrorException(HttpErrorCode.UserNotFoundError));
+        MinecraftUser minecraftUser = validateExistUserInTurtlePlayGround(user.getNickname());
 
         if(minecraftUser.getCurrentStatus().equals("OFFLINE")){
             throw new HttpErrorException(HttpErrorCode.PlayerNotLoggedInError);
@@ -49,5 +47,10 @@ public class UserService {
         redisService.saveAttendance(minecraftUser.getPlayerName());
         return UserAttendanceDto.from(response);
 
+    }
+
+    // 검증 메서드
+    public MinecraftUser validateExistUserInTurtlePlayGround(String nickname) {
+        return minecraftRepository.findByPlayerName(nickname);
     }
 }
