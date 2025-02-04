@@ -56,23 +56,6 @@ public class FileUtilService {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     protected void checkFileValid(MultipartFile file) {
         if (file.isEmpty() || Objects.isNull(file.getOriginalFilename())) {
             throw new InternalErrorException(InternalErrorType.EmptyFileError);

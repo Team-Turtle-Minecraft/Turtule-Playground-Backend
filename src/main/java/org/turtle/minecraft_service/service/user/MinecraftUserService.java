@@ -35,6 +35,35 @@ public class MinecraftUserService {
 
     }
 
+    public String giveHalfAttendanceRewardToUser(String nickname){
+        return webClient.post()
+                .uri("/command")
+                .header("X-API-Key", apiKey)
+                .bodyValue("give " + nickname + " diamond 5")
+                .retrieve()
+                .onStatus(status -> status.value() == 401,
+                        this::handle401Error)
+                .onStatus(status -> status.value() == 403,
+                        this::handle403Error)
+                .bodyToMono(String.class)
+                .block();
+
+    }
+
+    public String giveFullAttendanceRewardToUser(String nickname){
+        return webClient.post()
+                .uri("/command")
+                .header("X-API-Key", apiKey)
+                .bodyValue("give " + nickname + " diamond 10")
+                .retrieve()
+                .onStatus(status -> status.value() == 401,
+                        this::handle401Error)
+                .onStatus(status -> status.value() == 403,
+                        this::handle403Error)
+                .bodyToMono(String.class)
+                .block();
+    }
+
     private Mono<Throwable> handle401Error(ClientResponse response) {
         return Mono.error(new HttpErrorException(HttpErrorCode.UnauthorizedTurtlePlayGroundError));
     }

@@ -19,11 +19,11 @@ import org.turtle.minecraft_service.dto.community.create.PostSaveDto;
 import org.turtle.minecraft_service.dto.community.create.PostSaveRequestDto;
 import org.turtle.minecraft_service.dto.community.create.PostSaveResponseDto;
 import org.turtle.minecraft_service.dto.community.delete.PostDeleteResponseDto;
-import org.turtle.minecraft_service.dto.community.interaction.PostLikeResponseDto;
-import org.turtle.minecraft_service.dto.community.interaction.PostViewDto;
-import org.turtle.minecraft_service.dto.community.interaction.PostViewResponseDto;
+import org.turtle.minecraft_service.dto.community.interaction.*;
 import org.turtle.minecraft_service.dto.community.read.detail.PostDetailDto;
 import org.turtle.minecraft_service.dto.community.read.detail.PostDetailResponseDto;
+import org.turtle.minecraft_service.dto.community.read.list.MyPostListDto;
+import org.turtle.minecraft_service.dto.community.read.list.MyPostListResponseDto;
 import org.turtle.minecraft_service.dto.community.read.list.PostListDto;
 import org.turtle.minecraft_service.dto.community.read.list.PostListResponseDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateDto;
@@ -60,6 +60,22 @@ public class PostController {
 
         return new ResponseEntity<>(PostListResponseDto.fromDto(dto), HttpStatus.OK);
     }
+
+    @Operation(summary = "내가 작성한 게시물 목록 조회")
+    @ApiErrorCodeExamples(value = {
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError)
+    })
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = MyPostListResponseDto.class)))
+    @GetMapping("/my")
+    public ResponseEntity<MyPostListResponseDto> getMyPostList(@AuthenticationPrincipal User user){
+
+        MyPostListDto dto = postService.getMyPostList(user);
+
+        return new ResponseEntity<>(MyPostListResponseDto.fromDto(dto), HttpStatus.OK);
+    }
+
 
     @Operation(summary = "게시물 검색")
     @ApiErrorCodeExamples(value = {
@@ -167,12 +183,19 @@ public class PostController {
     })
     @ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = PostLikeResponseDto.class)))
     @PostMapping("/{id}/like")
-    public ResponseEntity<PostLikeResponseDto> likeThePost(@AuthenticationPrincipal User user,
-                                                           @PathVariable Long id
-    ) {
+    public ResponseEntity<PostLikeResponseDto> likeThePost(@AuthenticationPrincipal User user, @PathVariable Long id) {
         String resultMessage = postService.likeThePost(user, id);
 
         return new ResponseEntity<>(PostLikeResponseDto.createNewResponse(resultMessage), HttpStatus.CREATED);
+    }
+    @Operation(summary = "게시물 좋아요 상태 확인")
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PostLikeStatusResponseDto.class)))
+    @GetMapping("/{id}/like")
+    public ResponseEntity<PostLikeStatusResponseDto> getPostLikeStatus(@AuthenticationPrincipal User user, @PathVariable Long id) {
+
+        PostLikeStatusDto dto = postService.getPostLikeStatus(user, id);
+
+        return new ResponseEntity<>(PostLikeStatusResponseDto.fromDto(dto), HttpStatus.OK);
     }
 
     @Operation(summary = "게시물 조회수 증가")
