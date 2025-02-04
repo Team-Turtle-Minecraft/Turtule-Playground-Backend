@@ -81,6 +81,8 @@ public class AuthService {
 
         redisService.save(refreshToken, accessToken);
 
+        log.info("accessToken: {} refreshToken: {}", accessToken, refreshToken);
+
         return LoginDto.of(accessToken, refreshToken);
     }
 
@@ -128,6 +130,8 @@ public class AuthService {
         String reIssuedAccessToken = jwtTokenProvider.reIssueAccessToken(resolvedAccessToken);
         redisService.delete(resolvedAccessToken);
         redisService.save(resolvedRefreshToken, reIssuedAccessToken);
+
+        log.info("reIssuedAccessToken: {}", reIssuedAccessToken);
         return TokenReIssueDto.of(reIssuedAccessToken);
     }
 

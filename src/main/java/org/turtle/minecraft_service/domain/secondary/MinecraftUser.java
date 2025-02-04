@@ -13,7 +13,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "user_detailed_info")
 @Getter
-@Setter
 public class MinecraftUser {
 
     @Id
@@ -61,5 +60,33 @@ public class MinecraftUser {
 
     @Column(name = "current_status")
     private String currentStatus;
+
+    @Column(name = "character_class")
+    private String characterClass;
+
+    @Column(name = "character_level")
+    private int characterLevel;
+
+    @Column(name = "character_exp")
+    private int characterExp;
+
+    @Column(name = "smithing_level")
+    private Long smithingLevel;
+
+    @Column(name = "farming_level")
+    private Long farmingLevel;
+
+    @Column(name = "cooking_level")
+    private Long cookingLevel;
+
+    @Column(name = "mining_level")
+    private Long miningLevel;
+
+    @Column(name = "gathering_level")
+    private Long gatheringLevel;
+
+    @Column(name = "fisher_level")
+    private Long fisherLevel;
+
 
 }

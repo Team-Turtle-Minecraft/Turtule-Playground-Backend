@@ -19,8 +19,10 @@ import org.turtle.minecraft_service.domain.primary.community.PostLike;
 import org.turtle.minecraft_service.domain.primary.user.User;
 import org.turtle.minecraft_service.dto.community.create.PostSaveDto;
 import org.turtle.minecraft_service.dto.community.create.PostSaveRequestDto;
+import org.turtle.minecraft_service.dto.community.interaction.PostLikeStatusDto;
 import org.turtle.minecraft_service.dto.community.interaction.PostViewDto;
 import org.turtle.minecraft_service.dto.community.read.detail.PostDetailDto;
+import org.turtle.minecraft_service.dto.community.read.list.MyPostListDto;
 import org.turtle.minecraft_service.dto.community.read.list.PostListDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateDto;
 import org.turtle.minecraft_service.dto.community.update.PostUpdateRequestDto;
@@ -52,7 +54,7 @@ public class PostService {
     @Value("${file.upload.image.api}")
     private String postImageApiUrlPrefix;
 
-    private final int PAGE_SIZE = 10;
+    private final int PAGE_SIZE = 8;
 
     public PostListDto getPostList(String postType, String sortType, int page){
 
@@ -75,6 +77,14 @@ public class PostService {
         return PostListDto.of(postImageApiUrlPrefix,postPage);
 
     }
+
+    public MyPostListDto getMyPostList(User user){
+
+        List<Post> myPosts = postRepository.findByCreator(user.getNickname());
+
+        return MyPostListDto.of(myPosts);
+    }
+
 
 
     public PostListDto getSearchedPosts(String keyword, int page){
@@ -160,6 +170,14 @@ public class PostService {
         }
 
         return message;
+    }
+
+    public PostLikeStatusDto getPostLikeStatus(User user, Long postId){
+
+        boolean postLikeStatus = postLikeRepository.findByPostIdAndUserId(postId, user.getId()) != null;
+
+        return PostLikeStatusDto.fromEntity(postLikeStatus);
+
     }
 
 

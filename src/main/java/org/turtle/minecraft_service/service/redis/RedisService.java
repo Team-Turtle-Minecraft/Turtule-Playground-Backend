@@ -11,8 +11,9 @@ import org.turtle.minecraft_service.exception.HttpErrorException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -34,10 +35,7 @@ public class RedisService {
 
     public void delete(String key) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        String deletedData = valueOperations.getAndDelete(key);
-        if (deletedData == null) {
-            throw new HttpErrorException(HttpErrorCode.InternalServerError);
-        }
+        valueOperations.getAndDelete(key);
     }
 
     // Post Views
@@ -57,13 +55,7 @@ public class RedisService {
         return "post:view" + postId + ":" + snsId;
     }
 
-    // User Attendance
-    public void saveAttendance(String nickname) {
-        String key = generateAttendanceKey(nickname);
-        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set(key, LocalDate.now().toString(), getTimeOut(), TimeUnit.SECONDS);
-    }
-
+    // User Attendance, Attendance-Reward
     public boolean hasAttendanceToday(String nickname) {
         String key = generateAttendanceKey(nickname);
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
@@ -71,8 +63,76 @@ public class RedisService {
         return value != null && value.equals(LocalDate.now().toString());
     }
 
+
+    public void saveAttendance(String nickname) {
+        String key = generateAttendanceKey(nickname);
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        valueOperations.set(key, LocalDate.now().toString(), getTimeOut(), TimeUnit.SECONDS);
+    }
+
+    public void saveAttendanceHistory(String snsId){
+        String key = generateAttendanceHistoryKey(snsId);
+        LocalDateTime now = LocalDateTime.now();
+        long expirationSeconds = getExpirationUntilNextMonth(now);
+
+        redisTemplate.opsForZSet().add(key, now.toString(), now.toEpochSecond(ZoneOffset.UTC));
+        redisTemplate.expire(key, expirationSeconds, TimeUnit.SECONDS);
+    }
+    
+    public void saveHalfAttendanceRewardHistory(String snsId){
+        String key = generateHalfAttendanceRewardKey(snsId);
+        LocalDateTime now = LocalDateTime.now();
+        long expirationSeconds = getExpirationUntilNextMonth(now);
+
+        redisTemplate.opsForZSet().add(key, now.toString(), now.toEpochSecond(ZoneOffset.UTC));
+        redisTemplate.expire(key, expirationSeconds, TimeUnit.SECONDS);
+    }
+
+    public void saveFullAttendanceRewardHistory(String snsId){
+        String key = generateFullAttendanceRewardKey(snsId);
+        LocalDateTime now = LocalDateTime.now();
+        long expirationSeconds = getExpirationUntilNextMonth(now);
+
+        redisTemplate.opsForZSet().add(key, now.toString(), now.toEpochSecond(ZoneOffset.UTC));
+        redisTemplate.expire(key, expirationSeconds, TimeUnit.SECONDS);
+    }
+
+
+    public List<String> getAttendanceHistory(String snsId) {
+        String key = generateAttendanceHistoryKey(snsId);
+        Set<String> attendanceDates = redisTemplate.opsForZSet().range(key, 0, -1);
+        return attendanceDates != null ? new ArrayList<>(attendanceDates) : new ArrayList<>();
+    }
+
+    public long getAttendanceCount(String snsId) {
+        String key = generateAttendanceHistoryKey(snsId);
+        return redisTemplate.opsForZSet().size(key);
+    }
+
+    public boolean hasReceivedHalfAttendanceReward(String snsId) {
+        String key = generateHalfAttendanceRewardKey(snsId);
+        return !redisTemplate.opsForZSet().range(key, 0, -1).isEmpty();
+    }
+
+    public boolean hasReceivedFullAttendanceReward(String snsId) {
+        String key = generateFullAttendanceRewardKey(snsId);
+        return !redisTemplate.opsForZSet().range(key, 0, -1).isEmpty();
+    }
+
     private String generateAttendanceKey(String nickname) {
         return "attendance:" + nickname;
+    }
+
+    private String generateAttendanceHistoryKey(String snsId) {
+        return "attendance:" + snsId;
+    }
+
+    private String generateHalfAttendanceRewardKey(String snsId) {
+        return "attendance-reward-half:" + snsId;
+    }
+
+    private String generateFullAttendanceRewardKey(String snsId) {
+        return "attendance-reward-full:" + snsId;
     }
 
     // 다음날 오전 6시까지 남은 시간(초) 계산
@@ -86,5 +146,10 @@ public class RedisService {
         }
 
         return ChronoUnit.SECONDS.between(now, nextSixAM);
+    }
+
+    private static long getExpirationUntilNextMonth(LocalDateTime now) {
+        LocalDateTime nextMonth = now.plusMonths(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        return ChronoUnit.SECONDS.between(now, nextMonth);
     }
 }

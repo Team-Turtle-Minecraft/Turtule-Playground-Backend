@@ -35,6 +35,24 @@ public class UserInfoInquiryResponseDto {
 
     private String loginStatus;
 
+    private String characterClass;
+
+    private int characterLevel;
+
+    private int characterExp;
+
+    private Long smithingLevel;
+
+    private Long farmingLevel;
+
+    private Long cookingLevel;
+
+    private Long miningLevel;
+
+    private Long gatheringLevel;
+
+    private Long fisherLevel;
+
 
     public static UserInfoInquiryResponseDto fromDto(UserInfoInquiryDto dto){
         return UserInfoInquiryResponseDto.builder()
@@ -49,6 +67,15 @@ public class UserInfoInquiryResponseDto {
                 .monstersDiscovered(dto.getMonstersDiscovered())
                 .regionsDiscovered(dto.getRegionsDiscovered())
                 .loginStatus(dto.getLoginStatus())
+                .characterClass(dto.getCharacterClass())
+                .characterLevel(dto.getCharacterLevel())
+                .characterExp(dto.getCharacterExp())
+                .smithingLevel(dto.getSmithingLevel())
+                .farmingLevel(dto.getFarmingLevel())
+                .cookingLevel(dto.getCookingLevel())
+                .miningLevel(dto.getMiningLevel())
+                .gatheringLevel(dto.getGatheringLevel())
+                .fisherLevel(dto.getFisherLevel())
                 .build();
     }
 }

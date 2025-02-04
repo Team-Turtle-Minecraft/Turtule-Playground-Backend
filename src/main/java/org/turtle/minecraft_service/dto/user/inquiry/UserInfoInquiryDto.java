@@ -36,6 +36,24 @@ public class UserInfoInquiryDto {
 
     private String loginStatus;
 
+    private String characterClass;
+
+    private int characterLevel;
+
+    private int characterExp;
+
+    private Long smithingLevel;
+
+    private Long farmingLevel;
+
+    private Long cookingLevel;
+
+    private Long miningLevel;
+
+    private Long gatheringLevel;
+
+    private Long fisherLevel;
+
     public static UserInfoInquiryDto of(User user, MinecraftUser minecraftUser){
         return UserInfoInquiryDto.builder()
                 .snsType(user.getSnsType())
@@ -49,6 +67,15 @@ public class UserInfoInquiryDto {
                 .monstersDiscovered(minecraftUser.getMonstersDiscoveries())
                 .regionsDiscovered(minecraftUser.getRegionsDiscoveries())
                 .loginStatus(minecraftUser.getCurrentStatus())
+                .characterClass(minecraftUser.getCharacterClass())
+                .characterLevel(minecraftUser.getCharacterLevel())
+                .characterExp(minecraftUser.getCharacterExp())
+                .smithingLevel(minecraftUser.getSmithingLevel())
+                .farmingLevel(minecraftUser.getFarmingLevel())
+                .gatheringLevel(minecraftUser.getGatheringLevel())
+                .fisherLevel(minecraftUser.getFisherLevel())
+                .cookingLevel(minecraftUser.getCookingLevel())
+                .miningLevel(minecraftUser.getMiningLevel())
                 .build();
     }
 

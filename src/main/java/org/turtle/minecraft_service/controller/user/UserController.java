@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.turtle.minecraft_service.config.HttpErrorCode;
 import org.turtle.minecraft_service.domain.primary.user.User;
-import org.turtle.minecraft_service.dto.user.attendance.UserAttendanceDto;
-import org.turtle.minecraft_service.dto.user.attendance.UserAttendanceResponseDto;
+import org.turtle.minecraft_service.dto.user.attendance.*;
 import org.turtle.minecraft_service.dto.user.inquiry.UserInfoInquiryDto;
 import org.turtle.minecraft_service.dto.user.inquiry.UserInfoInquiryResponseDto;
 import org.turtle.minecraft_service.service.user.UserService;
@@ -64,5 +63,76 @@ public class UserController {
         UserAttendanceDto dto = userService.checkAttendance(user);
 
         return new ResponseEntity<>(UserAttendanceResponseDto.fromDto(dto), HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "15일 출석 보상")
+    @ApiErrorCodeExamples(value = {
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.PlayerNotLoggedInError),
+            @ApiErrorCodeExample(value = HttpErrorCode.AlreadyCheckedInError),
+            @ApiErrorCodeExample(value = HttpErrorCode.UnauthorizedTurtlePlayGroundError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ForbiddenTurtlePlayGroundError)
+    })
+    @ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = UserHalfAttendanceRewardResponseDto.class)))
+    @PostMapping("/attendance-reward/15days")
+    public ResponseEntity<UserHalfAttendanceRewardResponseDto> getHalfAttendanceReward(@AuthenticationPrincipal User user) {
+
+        UserHalfAttendanceRewardDto dto = userService.getHalfAttendanceReward(user);
+
+        return new ResponseEntity<>(UserHalfAttendanceRewardResponseDto.fromDto(dto), HttpStatus.CREATED);
+    }
+
+
+    @Operation(summary = "월간 출석 보상")
+    @ApiErrorCodeExamples(value = {
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.PlayerNotLoggedInError),
+            @ApiErrorCodeExample(value = HttpErrorCode.AlreadyCheckedInError),
+            @ApiErrorCodeExample(value = HttpErrorCode.UnauthorizedTurtlePlayGroundError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ForbiddenTurtlePlayGroundError)
+    })
+    @ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = UserFullAttendanceRewardResponseDto.class)))
+    @PostMapping("/attendance-reward/allDays")
+    public ResponseEntity<UserFullAttendanceRewardResponseDto> getFullAttendanceReward(@AuthenticationPrincipal User user) {
+
+        UserFullAttendanceRewardDto dto = userService.getFullAttendanceReward(user);
+
+        return new ResponseEntity<>(UserFullAttendanceRewardResponseDto.fromDto(dto), HttpStatus.CREATED);
+    }
+
+
+
+    @Operation(summary = "출석기록 조회")
+    @ApiErrorCodeExamples(value = {
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError),
+    })
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UserAttendanceHistoryResponseDto.class)))
+    @GetMapping("/attendance/history")
+    public ResponseEntity<UserAttendanceHistoryResponseDto> getAttendanceHistory(@AuthenticationPrincipal User user) {
+
+        UserAttendanceHistoryDto dto = userService.getAttendanceHistory(user);
+
+        return new ResponseEntity<>(UserAttendanceHistoryResponseDto.fromDto(dto), HttpStatus.OK);
+    }
+
+    @Operation(summary = "출석보상 기록 조회")
+    @ApiErrorCodeExamples(value = {
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError),
+    })
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UserAttendanceRewardHistoryResponseDto.class)))
+    @GetMapping("/attendance-reward/history")
+    public ResponseEntity<UserAttendanceRewardHistoryResponseDto> getAttendanceRewardHistory(@AuthenticationPrincipal User user) {
+
+        UserAttendanceRewardHistoryDto dto = userService.getAttendanceRewardHistory(user);
+
+        return new ResponseEntity<>(UserAttendanceRewardHistoryResponseDto.fromDto(dto), HttpStatus.OK);
     }
 }
