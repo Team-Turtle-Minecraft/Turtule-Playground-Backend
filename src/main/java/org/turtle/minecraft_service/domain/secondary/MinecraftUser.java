@@ -25,50 +25,35 @@ public class MinecraftUser {
     @Column(name = "money")
     private double money;
 
-    @Column(name = "last_seen")
-    private LocalDateTime lastSeen;
-
-    @Column(name = "tag_name")
-    private String tagName;
-
     @Column(name = "tag")
     private String tag;
 
     @Column(name = "primary_group")
     private String primaryGroup;
 
-    @Column(name = "registrants")
-    private Long registrants;
-
     @Column(name = "progress")
     private Long progress;
 
-    @Column(name = "categories", columnDefinition = "TEXT")
-    private String categories;
-
-    @Column(name = "badgets_discoveries")
-    private Long badgetsDiscoveries;
-
-    @Column(name = "history_discoveries")
-    private Long historyDiscoveries;
-
-    @Column(name = "monsters_discoveries")
-    private Long monstersDiscoveries;
-
-    @Column(name = "regions_discoveries")
-    private Long regionsDiscoveries;
-
     @Column(name = "current_status")
     private String currentStatus;
+
+    @Column(name = "total_enchant_success")
+    private Long totalEnchantSuccess;
+
+    @Column(name = "total_enchant_fail")
+    private Long totalEnchantFail;
+
+    @Column(name = "total_enchant_attempts")
+    private Long totalEnchantAttempts;
+
+    @Column(name = "total_enchant_rate")
+    private double totalEnchantRate;
 
     @Column(name = "character_class")
     private String characterClass;
 
     @Column(name = "character_level")
     private int characterLevel;
-
-    @Column(name = "character_exp")
-    private int characterExp;
 
     @Column(name = "smithing_level")
     private Long smithingLevel;

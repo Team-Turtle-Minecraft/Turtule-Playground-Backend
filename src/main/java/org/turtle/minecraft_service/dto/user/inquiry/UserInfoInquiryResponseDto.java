@@ -25,21 +25,19 @@ public class UserInfoInquiryResponseDto {
 
     private Long progress;
 
-    private Long badgeDiscovered;
-
-    private Long historyDiscovered;
-
-    private Long monstersDiscovered;
-
-    private Long regionsDiscovered;
-
     private String loginStatus;
+
+    private Long totalEnchantSuccess;
+
+    private Long totalEnchantFail;
+
+    private Long totalEnchantAttempts;
+
+    private double totalEnchantRate;
 
     private String characterClass;
 
     private int characterLevel;
-
-    private int characterExp;
 
     private Long smithingLevel;
 
@@ -59,17 +57,15 @@ public class UserInfoInquiryResponseDto {
                 .snsType(dto.getSnsType())
                 .nickname(dto.getNickname())
                 .money(dto.getMoney())
-                .lastLogin(dto.getLastLogin())
                 .title(dto.getTitle())
                 .progress(dto.getProgress())
-                .badgeDiscovered(dto.getBadgeDiscovered())
-                .historyDiscovered(dto.getHistoryDiscovered())
-                .monstersDiscovered(dto.getMonstersDiscovered())
-                .regionsDiscovered(dto.getRegionsDiscovered())
                 .loginStatus(dto.getLoginStatus())
+                .totalEnchantSuccess(dto.getTotalEnchantSuccess())
+                .totalEnchantFail(dto.getTotalEnchantFail())
+                .totalEnchantAttempts(dto.getTotalEnchantAttempts())
+                .totalEnchantRate(dto.getTotalEnchantRate())
                 .characterClass(dto.getCharacterClass())
                 .characterLevel(dto.getCharacterLevel())
-                .characterExp(dto.getCharacterExp())
                 .smithingLevel(dto.getSmithingLevel())
                 .farmingLevel(dto.getFarmingLevel())
                 .cookingLevel(dto.getCookingLevel())
