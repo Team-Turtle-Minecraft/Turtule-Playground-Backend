@@ -20,27 +20,23 @@ public class UserInfoInquiryDto {
 
     private double money;
 
-    private LocalDateTime lastLogin;
-
     private String title;
 
     private Long progress;
 
-    private Long badgeDiscovered;
-
-    private Long historyDiscovered;
-
-    private Long monstersDiscovered;
-
-    private Long regionsDiscovered;
-
     private String loginStatus;
+
+    private Long totalEnchantSuccess;
+
+    private Long totalEnchantFail;
+
+    private Long totalEnchantAttempts;
+
+    private double totalEnchantRate;
 
     private String characterClass;
 
     private int characterLevel;
-
-    private int characterExp;
 
     private Long smithingLevel;
 
@@ -59,17 +55,15 @@ public class UserInfoInquiryDto {
                 .snsType(user.getSnsType())
                 .nickname(minecraftUser.getPlayerName())
                 .money(minecraftUser.getMoney())
-                .lastLogin(minecraftUser.getLastSeen())
                 .title(minecraftUser.getTag())
                 .progress(minecraftUser.getProgress())
-                .badgeDiscovered(minecraftUser.getBadgetsDiscoveries())
-                .historyDiscovered(minecraftUser.getHistoryDiscoveries())
-                .monstersDiscovered(minecraftUser.getMonstersDiscoveries())
-                .regionsDiscovered(minecraftUser.getRegionsDiscoveries())
                 .loginStatus(minecraftUser.getCurrentStatus())
+                .totalEnchantSuccess(minecraftUser.getTotalEnchantSuccess())
+                .totalEnchantFail(minecraftUser.getTotalEnchantFail())
+                .totalEnchantAttempts(minecraftUser.getTotalEnchantAttempts())
+                .totalEnchantRate(minecraftUser.getTotalEnchantRate())
                 .characterClass(minecraftUser.getCharacterClass())
                 .characterLevel(minecraftUser.getCharacterLevel())
-                .characterExp(minecraftUser.getCharacterExp())
                 .smithingLevel(minecraftUser.getSmithingLevel())
                 .farmingLevel(minecraftUser.getFarmingLevel())
                 .gatheringLevel(minecraftUser.getGatheringLevel())
