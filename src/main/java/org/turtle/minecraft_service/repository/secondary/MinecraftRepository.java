@@ -4,7 +4,7 @@ package org.turtle.minecraft_service.repository.secondary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.turtle.minecraft_service.domain.secondary.MinecraftUser;
+import org.turtle.minecraft_service.domain.secondary.user.MinecraftUser;
 
 import java.util.List;
 

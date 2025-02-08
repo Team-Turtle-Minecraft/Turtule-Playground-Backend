@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.turtle.minecraft_service.config.HttpErrorCode;
 import org.turtle.minecraft_service.constant.SnsType;
 import org.turtle.minecraft_service.domain.primary.user.User;
-import org.turtle.minecraft_service.domain.secondary.MinecraftUser;
 import org.turtle.minecraft_service.dto.auth.login.LoginDto;
 import org.turtle.minecraft_service.dto.auth.login.LoginRequestDto;
 import org.turtle.minecraft_service.dto.auth.signup.SignupDto;

@@ -3,7 +3,7 @@ package org.turtle.minecraft_service.dto.ranking.collection;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import org.turtle.minecraft_service.domain.secondary.MinecraftUser;
+import org.turtle.minecraft_service.domain.secondary.user.MinecraftUser;
 
 @Getter
 @AllArgsConstructor
