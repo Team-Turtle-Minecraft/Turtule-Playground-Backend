@@ -5,9 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.turtle.minecraft_service.constant.SnsType;
 import org.turtle.minecraft_service.domain.primary.user.User;
-import org.turtle.minecraft_service.domain.secondary.MinecraftUser;
-
-import java.time.LocalDateTime;
+import org.turtle.minecraft_service.domain.secondary.user.MinecraftUser;
 
 @Getter
 @AllArgsConstructor

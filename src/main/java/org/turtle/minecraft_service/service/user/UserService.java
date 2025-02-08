@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.turtle.minecraft_service.config.HttpErrorCode;
 import org.turtle.minecraft_service.domain.primary.user.User;
-import org.turtle.minecraft_service.domain.secondary.MinecraftUser;
+import org.turtle.minecraft_service.domain.secondary.user.MinecraftUser;
 import org.turtle.minecraft_service.dto.user.attendance.*;
 import org.turtle.minecraft_service.dto.user.inquiry.UserInfoInquiryDto;
 import org.turtle.minecraft_service.exception.HttpErrorException;
@@ -14,7 +14,6 @@ import org.turtle.minecraft_service.repository.secondary.MinecraftRepository;
 import org.turtle.minecraft_service.service.redis.RedisService;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @AllArgsConstructor

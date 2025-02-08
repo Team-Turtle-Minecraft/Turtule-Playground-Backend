@@ -129,7 +129,18 @@ public enum HttpErrorCode {
     ),
     ForbiddenTurtlePlayGroundError(
             HttpStatus.FORBIDDEN, "허가되지 않은 거북이 놀이터 서버 접근입니다."
+    ),
+
+    // ----- Ranking ------
+    FirstSoloBossClearLogNotFoundError(
+            HttpStatus.NOT_FOUND, "해당 보스의 솔로 클리어 기록이 없습니다."
+    ),
+
+    FirstPartyBossClearLogNotFoundError(
+            HttpStatus.NOT_FOUND, "해당 보스의 파티 클리어 기록이 없습니다. "
     );
+
+
 
 
 

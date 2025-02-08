@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.turtle.minecraft_service.config.HttpErrorCode;
+import org.turtle.minecraft_service.constant.BossClearType;
 import org.turtle.minecraft_service.constant.JobType;
 import org.turtle.minecraft_service.domain.primary.user.User;
+import org.turtle.minecraft_service.dto.ranking.boss.BossClearRankingDto;
+import org.turtle.minecraft_service.dto.ranking.boss.BossClearRankingResponseDto;
 import org.turtle.minecraft_service.dto.ranking.collection.CollectionRankingDto;
 import org.turtle.minecraft_service.dto.ranking.collection.CollectionRankingResponseDto;
 import org.turtle.minecraft_service.dto.ranking.level.LevelRankingDto;
@@ -38,7 +41,7 @@ public class RankingController {
 
     @Operation(summary = "도감 완성도")
     @ApiErrorCodeExamples(value = {
-            @ApiErrorCodeExample(HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
             @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
             @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError)
     })
@@ -53,7 +56,7 @@ public class RankingController {
 
     @Operation(summary = "돈")
     @ApiErrorCodeExamples(value = {
-            @ApiErrorCodeExample(HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
             @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
             @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError)
     })
@@ -68,7 +71,7 @@ public class RankingController {
 
     @Operation(summary = "전체 게시물 좋아요")
     @ApiErrorCodeExamples(value = {
-            @ApiErrorCodeExample(HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
             @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
             @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError)
     })
@@ -83,7 +86,7 @@ public class RankingController {
 
     @Operation(summary = "레벨")
     @ApiErrorCodeExamples(value = {
-            @ApiErrorCodeExample(HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
             @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
             @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError),
             @ApiErrorCodeExample(value = HttpErrorCode.NotValidRequestError)
@@ -98,4 +101,24 @@ public class RankingController {
 
         return new ResponseEntity<>(LevelRankingResponseDto.fromDto(dto), HttpStatus.OK);
     }
+
+    @Operation(summary = "보스 퍼클")
+    @ApiErrorCodeExamples(value = {
+            @ApiErrorCodeExample(value = HttpErrorCode.AccessDeniedError),
+            @ApiErrorCodeExample(value = HttpErrorCode.NotValidAccessTokenError),
+            @ApiErrorCodeExample(value = HttpErrorCode.ExpiredAccessTokenError)
+    })
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = BossClearRankingResponseDto.class)))
+    @GetMapping("/boss")
+    public ResponseEntity<BossClearRankingResponseDto> getBossClearRanking(@AuthenticationPrincipal User user,
+                                                                           @RequestParam BossClearType bossClearType,
+                                                                           @RequestParam String bossName
+    ){
+
+        BossClearRankingDto dto = rankingService.getBossClearRanking(bossClearType, bossName);
+
+        return new ResponseEntity<>(BossClearRankingResponseDto.fromDto(dto), HttpStatus.OK);
+
+    }
+
 }
