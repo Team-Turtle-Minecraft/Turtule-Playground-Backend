@@ -28,12 +28,11 @@ jobs:
          echo "${{ secrets.APPLICATION_PROD_YAML}}" > application-prod.yaml
          echo "${{ secrets.APPLICATION_TEST_YAML}}" > application-test.yaml
 
-     # deploy.sh 생성 - zip에 포함되어야 함
      - name: Create deploy.sh
        run: |
          echo "${{ secrets.DEPLOY_SH }}" | base64 --decode > deploy.sh
          chmod +x deploy.sh
-         ls -la deploy.sh  # 파일 생성 확인
+         ls -la deploy.sh
          
      - name: Gradle Build
        run: |
@@ -56,7 +55,22 @@ jobs:
      - name: Make zip file
        run: zip -r ./$PROJECT_NAME.zip .
        shell: bash
-     
+
+     - name: Upload artifact
+       uses: actions/upload-artifact@v2
+       with:
+         name: build-artifact
+         path: ${{ env.PROJECT_NAME }}.zip
+
+ deploy:
+   needs: build
+   runs-on: ubuntu-latest
+   steps:
+     - name: Download artifact
+       uses: actions/download-artifact@v2
+       with:
+         name: build-artifact
+
      - name: Configure AWS credentials
        uses: aws-actions/configure-aws-credentials@v1
        with:
