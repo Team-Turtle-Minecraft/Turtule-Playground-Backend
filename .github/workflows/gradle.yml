@@ -33,6 +33,7 @@ jobs:
        run: |
          echo "${{ secrets.DEPLOY_SH }}" | base64 --decode > deploy.sh
          chmod +x deploy.sh
+         ls -la deploy.sh  # 파일 생성 확인
          
      - name: Gradle Build
        run: |
