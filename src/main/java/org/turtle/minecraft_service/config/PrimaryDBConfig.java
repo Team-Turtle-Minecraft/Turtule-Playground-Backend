@@ -24,7 +24,7 @@ public class PrimaryDBConfig {
 
     @Bean
     @Primary
-    @ConfigurationProperties(prefix = "spring.datasource")
+    @ConfigurationProperties(prefix = "spring.datasource.primary")
     public DataSource primaryDataSource() {
         return DataSourceBuilder.create().build();
     }
@@ -39,6 +39,7 @@ public class PrimaryDBConfig {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setShowSql(true);
         vendorAdapter.setGenerateDdl(true);
+        vendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQLDialect");  // 명시적 설정
         em.setJpaVendorAdapter(vendorAdapter);
 
         HashMap<String, Object> prop = new HashMap<>();
