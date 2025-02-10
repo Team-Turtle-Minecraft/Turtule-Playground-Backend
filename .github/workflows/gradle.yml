@@ -33,6 +33,7 @@ jobs:
       - name: Decode DEPLOY_SH from Base64
         run: |
           echo "${{ secrets.DEPLOY_SH }}" | base64 --decode > deploy.sh
+          chmod +x deploy.sh
 
       - name: Gradle Caching
         uses: actions/cache@v3
