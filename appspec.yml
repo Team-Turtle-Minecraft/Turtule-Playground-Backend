@@ -11,6 +11,6 @@ permissions:
     group: ubuntu
 hooks:
   ApplicationStart:
-    - location: deploy.sh
+    - location: /home/ubuntu/Desktop/TurtlePlayground-service/deploy.sh
       timeout: 500
       runas: ubuntu
