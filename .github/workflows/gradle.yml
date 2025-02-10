@@ -30,6 +30,10 @@ jobs:
           echo "${{ secrets.APPLICATION_PROD_YAML}}" > application-prod.yaml
           echo "${{ secrets.APPLICATION_TEST_YAML}}" > application-test.yaml
 
+      - name: Decode DEPLOY_SH from Base64
+        run: |
+          echo "${{ secrets.DEPLOY_SH }}" | base64 --decode > deploy.sh
+
       - name: Gradle Caching
         uses: actions/cache@v3
         with:
