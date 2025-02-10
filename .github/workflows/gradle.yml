@@ -30,6 +30,13 @@ jobs:
           cd ../../../
           ls -al
 
+      - name: Add environment for Green and Blue
+        run: |
+          mkdir -p green
+          echo "${{ secrets.GREEN_ENV }}" > green/docker-compose.yml
+          mkdir -p blue
+          echo "${{ secrets.BLUE_ENV }}" > blue/docker-compose.yml
+
       - name: Create DEPLOY_SH from Base64
         run: |
           echo "${{ secrets.DEPLOY_SH }}" | base64 --decode > deploy.sh
