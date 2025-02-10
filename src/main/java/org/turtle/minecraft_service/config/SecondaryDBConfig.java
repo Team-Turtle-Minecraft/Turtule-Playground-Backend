@@ -22,7 +22,7 @@ import java.util.HashMap;
 public class SecondaryDBConfig {
 
     @Bean
-    @ConfigurationProperties(prefix = "spring.second-datasource")
+    @ConfigurationProperties(prefix = "spring.datasource.secondary")
     public DataSource secondaryDataSource() {
         return DataSourceBuilder.create().build();
     }
@@ -36,6 +36,7 @@ public class SecondaryDBConfig {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setShowSql(true);
         vendorAdapter.setGenerateDdl(true);
+        vendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQLDialect");  // 명시적 설정
         em.setJpaVendorAdapter(vendorAdapter);
 
         HashMap<String, Object> prop = new HashMap<>();
