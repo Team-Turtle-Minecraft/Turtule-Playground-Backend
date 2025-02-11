@@ -10,7 +10,11 @@ permissions:
     owner: ubuntu
     group: ubuntu
 hooks:
+  BeforeInstall:
+    - location: clean.sh
+      timeout: 300
+      runas: ubuntu
   ApplicationStart:
-    - location: /home/ubuntu/Desktop/TurtlePlayground-service/deploy.sh
+    - location: deploy.sh
       timeout: 500
       runas: ubuntu
