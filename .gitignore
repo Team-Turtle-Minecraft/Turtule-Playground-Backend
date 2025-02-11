@@ -44,3 +44,6 @@ out/
 
 ### static ###
 /src/main/resources/static
+
+### aws code deploy ###
+deploy.sh
