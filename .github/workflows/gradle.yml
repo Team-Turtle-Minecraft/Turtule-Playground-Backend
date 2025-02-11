@@ -1,6 +1,8 @@
 name: Spring Boot CI/CD
+
 env:
-  PROJECT_NAME: "turtle-playground"
+  PROJECT_NAME: "turtlePlayground"
+
 on:
   push:
     branches: [ "main" ]
@@ -9,7 +11,9 @@ on:
 
 jobs:
   build:
+    name: Spring Boot CI/CD
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
 
@@ -30,52 +34,43 @@ jobs:
           cd ../../../
           ls -al
 
-      - name: Add environment for Green and Blue
-        run: |
-          mkdir -p green
-          echo "${{ secrets.GREEN_ENV }}" > green/docker-compose.yml
-          mkdir -p blue
-          echo "${{ secrets.BLUE_ENV }}" > blue/docker-compose.yml
-
-      - name: Create DEPLOY_SH from Base64
+      - name: Decode DEPLOY_SH from Base64
         run: |
           echo "${{ secrets.DEPLOY_SH }}" | base64 --decode > deploy.sh
 
-      - name: Gradle Build
-        run: |
-          chmod +x gradlew
-          ./gradlew build -x test
-
-      - name: Docker Login & Push
-        uses: docker/login-action@v3
+      - name: Gradle caching
+        uses: actions/cache@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: ${{ secrets.DOCKER_REPO }}/turtle-playground-spring-boot-app:latest
+      - name: Grant Execute Permission For Gradlew
+        run: chmod +x gradlew
+
+      - name: Build with gradle
+        run: ./gradlew build -x test
 
       - name: Make zip file
         run: zip -r ./$PROJECT_NAME.zip .
         shell: bash
-
+      
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION}}
 
-      - name: Upload to S3
-        run: aws s3 cp ./$PROJECT_NAME.zip s3://${{ secrets.S3_BUCKET_NAME }}/deploy/$PROJECT_NAME.zip
+      - name: Upload to AWS S3
+        run: aws s3 cp $PROJECT_NAME.zip s3://${{ secrets.S3_BUCKET_NAME }}/deploy/$PROJECT_NAME.zip --region ap-northeast-2
 
-      - name: Deploy with AWS CodeDeploy
+      - name: Deploy code with AWS Code Deploy
         run: >
-          aws deploy create-deployment --application-name ${{ secrets.CODE_DEPLOY_APP }} 
-          --deployment-config-name CodeDeployDefault.AllAtOnce 
-          --deployment-group-name ${{ secrets.CODE_DEPLOY_DEPLOYMENT_GROUP }} 
+          aws deploy create-deployment --application-name ${{ secrets.CODE_DEPLOY_APP }}
+          --deployment-config-name CodeDeployDefault.AllAtOnce
+          --deployment-group-name ${{ secrets.CODE_DEPLOY_DEPLOYMENT_GROUP }}
           --s3-location bucket=${{ secrets.S3_BUCKET_NAME }},bundleType=zip,key=deploy/$PROJECT_NAME.zip
