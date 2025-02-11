@@ -20,7 +20,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Profile("prod-profile")
+@Profile("prod")
 public class S3FileService implements FileService {
 
     @Value("${cloud.aws.s3.bucket}")
