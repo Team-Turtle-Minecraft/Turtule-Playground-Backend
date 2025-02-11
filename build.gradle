@@ -33,8 +33,6 @@ dependencies {
 
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	testImplementation 'com.squareup.okhttp3:mockwebserver'
-
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
 	// swagger ui
