@@ -38,10 +38,12 @@ jobs:
          echo "${{ secrets.BLUE_ENV }}" | base64 --decode > blue/docker-compose.yml
          echo "${{ secrets.GREEN_ENV }}" | base64 --decode > green/docker-compose.yml
          
-     - name: Decode DEPLOY_SH from Base64
+     - name: Decode scripts from Base64
        run: |
          echo "${{ secrets.DEPLOY_SH }}" | base64 --decode > deploy.sh
+         echo "${{ secrets.CLEAN_SH }}" | base64 --decode > clean.sh
          chmod +x deploy.sh
+         chmod +x clean.sh
          
      - name: Gradle caching
        uses: actions/cache@v3
