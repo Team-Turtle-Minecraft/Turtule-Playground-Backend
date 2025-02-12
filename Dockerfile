@@ -1,5 +1,5 @@
 FROM openjdk:17-jdk-slim
-
+  
 WORKDIR /app
 
 ARG JAR_FILE=./build/libs/minecraft_service-0.0.1-SNAPSHOT.jar
