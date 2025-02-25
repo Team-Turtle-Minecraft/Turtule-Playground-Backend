@@ -12,12 +12,12 @@ import java.util.List;
 @Builder
 public class MoneyRankingDto {
 
-    private List<String> moneyRankers;
+    private List<MoneyRanker> moneyRankers;
 
     public static MoneyRankingDto from(List<MinecraftUser> moneyRankers){
         return MoneyRankingDto.builder()
                 .moneyRankers(moneyRankers.stream()
-                        .map(MinecraftUser::getPlayerName).toList())
+                        .map(MoneyRanker::fromEntity).toList())
                 .build();
     }
 
