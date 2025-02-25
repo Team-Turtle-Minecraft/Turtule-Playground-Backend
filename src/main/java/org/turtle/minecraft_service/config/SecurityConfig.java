@@ -72,6 +72,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer(){
         return web -> web.ignoring().requestMatchers(
                         "/api/health",
+                        "/api/common/**",
                         "/api/auth/login",
                         "/api/auth/check/nickname",
                         "/api/auth/logout",

@@ -5,8 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
-import org.turtle.minecraft_service.config.HttpErrorCode;
-import org.turtle.minecraft_service.exception.HttpErrorException;
+
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -60,14 +59,28 @@ public class RedisService {
         String key = generateAttendanceKey(nickname);
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         String value = valueOperations.get(key);
-        return value != null && value.equals(LocalDate.now().toString());
+
+        if (value == null) {
+            return false;
+        }
+
+        LocalDateTime lastAttendance = LocalDateTime.parse(value);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime todaySixAM = now.with(LocalTime.of(6, 0));
+
+        // 현재 시각이 오전 6시 이전이라면 전날 오전 6시를 기준으로 함
+        if (now.getHour() < 6) {
+            todaySixAM = todaySixAM.minusDays(1);
+        }
+
+        return lastAttendance.isAfter(todaySixAM);
     }
 
 
     public void saveAttendance(String nickname) {
         String key = generateAttendanceKey(nickname);
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set(key, LocalDate.now().toString(), getTimeOut(), TimeUnit.SECONDS);
+        valueOperations.set(key, LocalDateTime.now().toString(), getTimeOut(), TimeUnit.SECONDS);
     }
 
     public void saveAttendanceHistory(String snsId){
