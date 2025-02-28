@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 public class MoneyRankingResponseDto {
 
-    private List<String> moneyRankers;
+    private List<MoneyRanker> moneyRankers;
 
     public static MoneyRankingResponseDto fromDto(MoneyRankingDto dto) {
         return MoneyRankingResponseDto.builder()
