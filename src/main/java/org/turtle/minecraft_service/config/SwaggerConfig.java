@@ -14,6 +14,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.method.HandlerMethod;
 import org.turtle.minecraft_service.exception.ErrorResponseDto;
 import org.turtle.minecraft_service.swagger.ApiErrorCodeExample;
@@ -26,6 +27,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Configuration
+@Profile("local-profile")
 public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
