@@ -23,7 +23,7 @@ public class SignupRequestDto {
 
     @Schema(example = "kkOma_fan", description = "거북이 놀이터 서버에서 사용하고 있는 닉네임")
     @NotNull(message = "닉네임이 필요합니다.")
-    @Size(min = 2, max = 16, message = "닉네임은 2글자에서 16글자만 허용됩니다.")
+    @Size(min = 2, max = 40, message = "닉네임은 2글자에서 40글자만 허용됩니다.")
     private String nickname;
 
 }
