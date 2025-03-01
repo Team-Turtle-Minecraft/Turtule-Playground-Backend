@@ -24,7 +24,7 @@ public class MinecraftUserService {
         return webClient.post()
                 .uri("/command")
                 .header("X-API-Key", apiKey)
-                .bodyValue("give " + nickname + " diamond 1")
+                .bodyValue("mi give " +"CONSUMABLE ATTENDANCE_CHECK " + nickname + " 1")
                 .retrieve()
                 .onStatus(status -> status.value() == 401,
                         this::handle401Error)
@@ -39,7 +39,7 @@ public class MinecraftUserService {
         return webClient.post()
                 .uri("/command")
                 .header("X-API-Key", apiKey)
-                .bodyValue("give " + nickname + " diamond 5")
+                .bodyValue("mi give " +"CONSUMABLE Attendance_check_15 " + nickname + " 1")
                 .retrieve()
                 .onStatus(status -> status.value() == 401,
                         this::handle401Error)
@@ -54,7 +54,7 @@ public class MinecraftUserService {
         return webClient.post()
                 .uri("/command")
                 .header("X-API-Key", apiKey)
-                .bodyValue("give " + nickname + " diamond 10")
+                .bodyValue("mi give " +"CONSUMABLE Attendance_check_30 " + nickname + " 1")
                 .retrieve()
                 .onStatus(status -> status.value() == 401,
                         this::handle401Error)
