@@ -19,7 +19,7 @@ public class CommonService {
     private final MinecraftRepository minecraftRepository;
 
     public UserCountDto getCountOfUsers(){
-        List<String> gmPlayerNames = Arrays.asList("_appli_", "Koo_pa_", "_YYH_", "KSH_1348", "kkOma_fan");
+        List<String> gmPlayerNames = Arrays.asList("_appli_", "Koo_pa_", "_YYH_", "KSH_1348", "kkOma_fan", "uiu3111");
 
         int countOfUsers = minecraftRepository.findAllUsersWithoutGM(gmPlayerNames);
 
