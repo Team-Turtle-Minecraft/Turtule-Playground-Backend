@@ -21,7 +21,7 @@ public interface MinecraftRepository extends JpaRepository<MinecraftUser, Long> 
                    "    SELECT *, " +
                    "    RANK() OVER (ORDER BY progress DESC) as rank_num " +
                    "    FROM user_detailed_info " +
-                   "    WHERE playerName NOT IN ('_appli_', 'Koo_pa_', '_YYH_', 'KSH_1348', 'kkOma_fan', 'uiu3111')" +
+                   "    WHERE player_name NOT IN ('_appli_', 'Koo_pa_', '_YYH_', 'KSH_1348', 'kkOma_fan', 'uiu3111')" +
                    ") " +
                    "SELECT * " +
                    "FROM ranked_users " +
@@ -35,7 +35,7 @@ public interface MinecraftRepository extends JpaRepository<MinecraftUser, Long> 
                    "    SELECT *, " +
                    "    RANK() OVER (ORDER BY money DESC) as rank_num " +
                    "    FROM user_detailed_info" +
-                   "    WHERE playerName NOT IN ('_appli_', 'Koo_pa_', '_YYH_', 'KSH_1348', 'kkOma_fan', 'uiu3111')" +
+                   "    WHERE player_name NOT IN ('_appli_', 'Koo_pa_', '_YYH_', 'KSH_1348', 'kkOma_fan', 'uiu3111')" +
                    ") " +
                    "SELECT * " +
                    "FROM ranked_users " +
@@ -64,7 +64,7 @@ public interface MinecraftRepository extends JpaRepository<MinecraftUser, Long> 
                    "    SELECT *, " +
                    "    RANK() OVER (ORDER BY fisher_level DESC) as rank_num " +
                    "    FROM user_detailed_info" +
-                   "    WHERE playerName NOT IN ('_appli_', 'Koo_pa_', '_YYH_', 'KSH_1348', 'kkOma_fan', 'uiu3111')" +
+                   "    WHERE player_name NOT IN ('_appli_', 'Koo_pa_', '_YYH_', 'KSH_1348', 'kkOma_fan', 'uiu3111')" +
                    ") " +
                    "SELECT * " +
                    "FROM ranked_users " +
@@ -79,7 +79,7 @@ public interface MinecraftRepository extends JpaRepository<MinecraftUser, Long> 
                    "    SELECT *, " +
                    "    RANK() OVER (ORDER BY farming_level DESC) as rank_num " +
                    "    FROM user_detailed_info" +
-                   "    WHERE playerName NOT IN ('_appli_', 'Koo_pa_', '_YYH_', 'KSH_1348', 'kkOma_fan', 'uiu3111')" +
+                   "    WHERE player_name NOT IN ('_appli_', 'Koo_pa_', '_YYH_', 'KSH_1348', 'kkOma_fan', 'uiu3111')" +
                    ") " +
                    "SELECT * " +
                    "FROM ranked_users " +
@@ -94,7 +94,7 @@ public interface MinecraftRepository extends JpaRepository<MinecraftUser, Long> 
                    "    SELECT *, " +
                    "    RANK() OVER (ORDER BY mining_level DESC) as rank_num " +
                    "    FROM user_detailed_info" +
-                   "    WHERE playerName NOT IN ('_appli_', 'Koo_pa_', '_YYH_', 'KSH_1348', 'kkOma_fan', 'uiu3111')" +
+                   "    WHERE player_name NOT IN ('_appli_', 'Koo_pa_', '_YYH_', 'KSH_1348', 'kkOma_fan', 'uiu3111')" +
                    ") " +
                    "SELECT * " +
                    "FROM ranked_users " +
@@ -109,7 +109,7 @@ public interface MinecraftRepository extends JpaRepository<MinecraftUser, Long> 
                    "    SELECT *, " +
                    "    RANK() OVER (ORDER BY smithing_level DESC) as rank_num " +
                    "    FROM user_detailed_info" +
-                   "    WHERE playerName NOT IN ('_appli_', 'Koo_pa_', '_YYH_', 'KSH_1348', 'kkOma_fan', 'uiu3111')" +
+                   "    WHERE player_name NOT IN ('_appli_', 'Koo_pa_', '_YYH_', 'KSH_1348', 'kkOma_fan', 'uiu3111')" +
                    ") " +
                    "SELECT * " +
                    "FROM ranked_users " +
@@ -124,7 +124,7 @@ public interface MinecraftRepository extends JpaRepository<MinecraftUser, Long> 
                    "    SELECT *, " +
                    "    RANK() OVER (ORDER BY cooking_level DESC) as rank_num " +
                    "    FROM user_detailed_info" +
-                   "    WHERE playerName NOT IN ('_appli_', 'Koo_pa_', '_YYH_', 'KSH_1348', 'kkOma_fan', 'uiu3111')" +
+                   "    WHERE player_name NOT IN ('_appli_', 'Koo_pa_', '_YYH_', 'KSH_1348', 'kkOma_fan', 'uiu3111')" +
                    ") " +
                    "SELECT * " +
                    "FROM ranked_users " +
