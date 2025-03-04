@@ -151,12 +151,8 @@ public class RedisService {
     // 다음날 오전 6시까지 남은 시간(초) 계산
     private long getTimeOut() {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime nextSixAM = now.with(LocalTime.of(6, 0));
-
-        // 현재 시각이 오전 6시 이후라면 다음날 오전 6시로 설정
-        if (now.getHour() >= 6) {
-            nextSixAM = nextSixAM.plusDays(1);
-        }
+        // 항상 다음 날 오전 6시로 설정
+        LocalDateTime nextSixAM = now.plusDays(1).with(LocalTime.of(6, 0));
 
         return ChronoUnit.SECONDS.between(now, nextSixAM);
     }
