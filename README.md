@@ -32,12 +32,14 @@ __거북이 놀이터의 유저가 즐길 수 있는__ 공간을 만들기 위�
 - Gradle
 - MySQL
 - Redis
-- AWS S3 사용을 위한 AccessKey 발급
 
 ### 외부 API
-- AWS S3 사용을 위한 AccessKey 발급
+- OAuth2 제공자인 구글, 네이버, 카카오에서 OAuth2 애플리케이션을 생성
+- AWS S3 사용을 위한 AccessKey, SecretKey 발급
 
-## 🖥️  어플리케이션 실행
+### 마인크래프트 사설 서버 구축 및 자체 DB 구축
+
+## 🖥️  어플리케이션 실행 (로컬 환경)
 ### 1. 프로젝트 Clone
 ```
 git clone https://github.com/Team-Turtle-Minecraft/Turtule-Playground-Backend.git
@@ -50,7 +52,8 @@ cd Turtle-Playground-Backend
 
 ### 3. application.yaml 작성
 
-다음 3개의 파일을 `src/main/resources/static` 아래에 붙여 넣습니다.
+다음 3개의 파일을 `src/main/resources` 아래에 붙여 넣습니다.
+
 ```
 # application.yaml
 
@@ -58,9 +61,8 @@ spring:
   profiles:
     group:
       local: local-profile, common
-      dev: dev-profile, common
+      test: test-profile, common
       prod: prod-profile, common
-
 server:
   env: blue
 ```
@@ -68,10 +70,8 @@ server:
 </br>
 </br>
 
-AWS의 S3 버킷이름, 리전, AccessToken, OpenAI API key를 기입해줍니다.
+AWS의 S3 버킷이름, 리전, AccessKey, SecretKey를 입력해줍니다.
 ```
-# application-common.yaml
-
 spring:
   config:
     activate:
@@ -85,9 +85,6 @@ spring:
     default-property-inclusion: NON_NULL
     parser:
       allow-unquoted-control-chars: true
-
-application:
-  name:
 
 cloud:
   aws:
@@ -103,17 +100,9 @@ cloud:
   servlet:
     context-path: /
 
-openai-service:
-  api-key: #####
-  gpt-model: gpt-3.5-turbo
-  audio-model: whisper-1
-  http-client:
-    read-timeout: 3000
-    connect-timeout: 3000
-  urls:
-    base-url: https://api.openai.com/v1
-    chat-url: /chat/completions
-    create-transcription-url: /audio/transcriptions
+logging:
+  level:
+    com.github.wenqiqlantz.service.openaiclient: TRACE
 
 management:
   endpoints:
@@ -127,29 +116,46 @@ management:
   health:
     circuitbreakers:
       enabled: true
+  security:
+    enabled: false
 ```
 
 </br>
-MySQL 루트 비밀번호와 JWT Secret Key를 입력합니다.
+웹앱용 MySQL 루트 비밀번호, 마인크래프트 사설서버 MySQL 주소, username, password 와 JWT Secret Key를 입력합니다. (로컬용)
 
 ```
-application-local.yaml
+application-local.yaml 
 
 spring:
   config:
     activate:
-      on-profile: local-profile
+      on-profile: local-profile   
+  mvc:
+    cors:
+      allowed-origins: http://localhost:3000
+      allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+      allowed-headers: "*"
+      allow-credentials: true
+      max-age: 3600
+
   data:
     redis:
       host: localhost
-      port: 6379
+      port: 6377
   datasource:
-    url: jdbc:mysql://localhost:3306/mansumugang_service
-    username: root
-    password: #####
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    primary: # primary로 구분
+      jdbc-url: jdbc:mysql://localhost:3308/turtle-playground-db   
+      username: root
+      password: #####
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    secondary: # secondary로 구분
+      jdbc-url: #####
+      username: #####
+      password: #####
+      driver-class-name: com.mysql.cj.jdbc.Driver
 
-  # JPA Configuration
+
+   #JPA Configuration
   jpa:
     hibernate:
       ddl-auto: update
@@ -161,40 +167,39 @@ spring:
 jwt:
   secret: #####
   access:
-    expiration: 86400000
+    expiration: 6000000
+    #    expiration:   10000 6000000
     header: Authorization
 
   refresh:
-    expiration: 1209600000
+    expiration: 1209600000 # 2?
     header: Authorization-refresh
 
 server:
   port: 8080
 serverName: local-server
 
-logging:
-  level:
-    root: info
-
 file:
   upload:
     image:
       api: http://localhost:8080/images/
-      path: src/main/resources/static/images
-    audio:
-      api: http://localhost:8080/audios/
-      path: src/main/resources/static/audios
-    postImages:
-      api: http://localhost:8080/postImages/
-      path: src/main/resources/static/postImages
-```
+      path: /src/main/resources/static/images
 
+minecraft:
+  attendance:
+    address: http://#####
+    secret: #####
+
+logging:
+  level:
+    root: debug
+```
 </br>
 </br>
 
 
 ### 4. 정적 파일 저장을 위한 폴더 생성
-- `src/main/resources/static` 아래에 `images` 이름의 3개의 폴더를 생성합니다.
+- `src/main/resources/static` 아래에 `images` 이름의 폴더를 생성합니다.
 
 ### 5. 프로젝트 빌드
 ```
