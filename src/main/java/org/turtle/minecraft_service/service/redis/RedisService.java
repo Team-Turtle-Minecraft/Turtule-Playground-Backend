@@ -132,6 +132,17 @@ public class RedisService {
         return !redisTemplate.opsForZSet().range(key, 0, -1).isEmpty();
     }
 
+    // restore AttendanceHistory
+    public void restoreAttendanceHistory(String snsId, LocalDate targetDate) {
+        String key = generateAttendanceHistoryKey(snsId);
+        LocalDateTime dateTimeForRestore = targetDate.atTime(9, 0, 11, 111111);
+        long expirationSeconds = getExpirationUntilNextMonth(dateTimeForRestore);
+
+        redisTemplate.opsForZSet().add(key, dateTimeForRestore.toString(), dateTimeForRestore.toEpochSecond(ZoneOffset.UTC));
+        redisTemplate.expire(key, expirationSeconds, TimeUnit.SECONDS);
+    }
+
+    // util for RedisService
     private String generateAttendanceKey(String nickname) {
         return "attendance:" + nickname;
     }

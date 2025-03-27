@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Configuration
-@Profile("local-profile")
 public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
