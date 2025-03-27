@@ -73,6 +73,7 @@ public class SecurityConfig {
         return web -> web.ignoring().requestMatchers(
                         "/api/health",
                         "/api/common/**",
+                        "/api/admin/**",
                         "/api/auth/login",
                         "/api/auth/check/nickname",
                         "/api/auth/logout",

@@ -13,9 +13,6 @@ public interface MinecraftRepository extends JpaRepository<MinecraftUser, Long> 
 
    MinecraftUser findByPlayerName(String nickname);
 
-   @Query("SELECT COUNT(u) FROM MinecraftUser u WHERE u.playerName NOT IN (:gmPlayerNames)")
-   int findAllUsersWithoutGM(@Param("gmPlayerNames") List<String> gmPlayerNames);
-
    @Query(value =
            "WITH ranked_users AS (" +
                    "    SELECT *, " +
