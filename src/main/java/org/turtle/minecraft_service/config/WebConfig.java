@@ -17,6 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(
                         "http://localhost:3000",
+                        "https://api.turtle-playground.kr",
                         "https://turtle-playground.kr"
                 )
                 .allowedMethods("GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS")
